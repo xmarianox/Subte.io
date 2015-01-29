@@ -13,11 +13,7 @@ import android.os.Build;
 
 
 public class MainActivity extends ActionBarActivity {
-<<<<<<< HEAD
     //comentario de prueba
-=======
-
->>>>>>> f7051ba8c4604d12ef7aeaae1b1131bdece90f1c
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +25,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f7051ba8c4604d12ef7aeaae1b1131bdece90f1c
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

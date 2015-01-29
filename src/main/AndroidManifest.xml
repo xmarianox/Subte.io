@@ -4,11 +4,7 @@
 
     <application
         android:allowBackup="true"
-<<<<<<< HEAD
         android:icon="@drawable/ic_launcher"
-=======
-        android:icon="@mipmap/ic_launcher"
->>>>>>> f7051ba8c4604d12ef7aeaae1b1131bdece90f1c
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
@@ -6,10 +5,4 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-=======
-<resources>
-    <string name="app_name">Subte.io</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
->>>>>>> f7051ba8c4604d12ef7aeaae1b1131bdece90f1c
 </resources>
