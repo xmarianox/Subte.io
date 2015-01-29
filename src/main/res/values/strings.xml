@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Subte.io</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_section_estado">Estado</string>
+    <string name="title_section_mapa">Mapa</string>
+    <string name="title_activity_demo_maps">Map</string>
 
 </resources>
