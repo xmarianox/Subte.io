@@ -6,5 +6,6 @@
     <string name="title_section_estado">Estado</string>
     <string name="title_section_mapa">Mapa</string>
     <string name="title_activity_demo_maps">Map</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
