@@ -32,7 +32,7 @@ import la.funka.subteio.utils.Util;
 public class EstadoSubteFragment extends Fragment {
 
     private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
-    
+
     // Recycler constants
     private RecyclerView listaRecyclerView;
     private ArrayList<Linea> lineas = new ArrayList<Linea>();
@@ -61,7 +61,7 @@ public class EstadoSubteFragment extends Fragment {
         if (utils.isNetworkAvailable(getActivity())) {
             // Enviamos la consulta a la api.
             new TraerEstadoSubte().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
-            
+
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
             listaRecyclerView.setHasFixedSize(true);
