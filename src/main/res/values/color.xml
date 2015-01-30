@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores theme -->
+    <color name="primary">#FFC107</color>
+    <color name="primary_dark">#FFA000</color>
+    <color name="primary_light">#FFECB3</color>
+    <color name="window">#FFF</color>
+    <color name="accent">#448AFF</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#212121</color>
+    <color name="divider">#B6B6B6</color>
+    <!-- Colores de las lineas -->
+    <color name="linea_a">#05ADDE</color>
+    <color name="linea_b">#E81526</color>
+    <color name="linea_c">#046AB4</color>
+    <color name="linea_d">#087F69</color>
+    <color name="linea_e">#6D2281</color>
+    <color name="linea_h">#FDC903</color>
+    <color name="linea_p">#FDBA2D</color>
+    <color name="linea_u">#F56D1C</color>
+    <!-- Colores Status linea -->
+    <color name="status_normal">#090</color>
+    <color name="status_alerta">#E91627</color>
+</resources>
