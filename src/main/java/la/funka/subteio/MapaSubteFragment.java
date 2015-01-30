@@ -30,13 +30,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import la.funka.subteio.utils.ReadLocalJSON;
-
 
 public class MapaSubteFragment extends Fragment {
-
-    private static final String LOG_TAG = MapaSubteFragment.class.getSimpleName();
     
+    /** LOG_TAG */
+    private static final String LOG_TAG = MapaSubteFragment.class.getSimpleName();
+    /** GMAPS */
     private MapView mMapView;
     private GoogleMap mMap;
     private Bundle mBundle;
@@ -44,15 +43,17 @@ public class MapaSubteFragment extends Fragment {
     private ArrayList<Estaciones> estaciones_points = new ArrayList<Estaciones>();
 
     static final LatLng PALERMO = new LatLng(-34.5784220229043, -58.4257114410852);
-    static final LatLng RETIRO = new LatLng(-34.591193809372, -58.374018216823);
-    static LatLng USER_LOCATION = PALERMO;
+    /** Location */
+    static LatLng USER_LOCATION;
     static Location location;
+    static String provider;
 
+    /** Marker & Polylines */
     private String json = "";
     private ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
-    
+
     public MapaSubteFragment() {
     }
 
@@ -77,7 +78,7 @@ public class MapaSubteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBundle = savedInstanceState;
         
-        onLocationChange(location);
+        onLocationChanged(location);
     }
 
     private void setUpMapIfNeeded(View rootView) {
@@ -97,30 +98,35 @@ public class MapaSubteFragment extends Fragment {
         mMap.setMyLocationEnabled(true);
         Log.d(LOG_TAG, "setUpMapa "+ USER_LOCATION.toString());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USER_LOCATION, 13));
-
-        //Polyline line_d = mMap.addPolyline();
         // Markers
         parseGeoJson(mMap);
     }
     
     public void getUserLocation(Context context) {
         // Location Manager
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);        
         Criteria criteria = new Criteria();
-        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        provider = locationManager.getBestProvider(criteria, false);
+        location = locationManager.getLastKnownLocation(provider);
+
         if (location != null) {
-            double latidude = location.getLatitude();
-            double longitude = location.getLongitude();
+            Log.d(LOG_TAG, "getUserLocation(); Provider :" + provider + "Fue seleccionado.");
             
-            USER_LOCATION = new LatLng(latidude, longitude);
-            
-            Log.d(LOG_TAG, "getUserLocation() " + USER_LOCATION.toString());
+            onLocationChanged(location);
+        } else {
+            Log.d(LOG_TAG, "getUserLocation(); Location not available");
+            USER_LOCATION = PALERMO;
         }
     }
 
-    public void onLocationChange(Location location) {
-        this.location = location;
-        Log.d(LOG_TAG, "onLocationChange() " + USER_LOCATION.toString());
+    public void onLocationChanged(Location location) {
+        USER_LOCATION = PALERMO;
+        /*
+        int latidude = (int) (location.getLatitude());
+        int longitude = (int) (location.getLongitude());
+        Log.d(LOG_TAG, "onLocationChanged(). latidude: " + String.valueOf(latidude) + ", longitude: " + String.valueOf(longitude));
+        USER_LOCATION = new LatLng(latidude, longitude);
+        */
     }
     
     public void parseGeoJson(GoogleMap map) {

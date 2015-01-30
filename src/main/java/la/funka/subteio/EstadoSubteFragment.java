@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -121,7 +123,7 @@ public class EstadoSubteFragment extends Fragment {
         protected void onPostExecute(String resultado) {
             
             progressDialog.dismiss();
-
+            
             try {
 
                 JSONArray jsonArray = new JSONArray(resultado);
