@@ -36,6 +36,7 @@ public class EstadoSubteFragment extends Fragment {
     // Recycler constants
     private RecyclerView listaRecyclerView;
     private ArrayList<Linea> lineas = new ArrayList<Linea>();
+    LineaAdapter lineaAdapter;
     
     public EstadoSubteFragment() {
     }
@@ -65,7 +66,8 @@ public class EstadoSubteFragment extends Fragment {
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
             listaRecyclerView.setHasFixedSize(true);
-            listaRecyclerView.setAdapter(new LineaAdapter(lineas, R.layout.item_lineas));
+            lineaAdapter = new LineaAdapter(lineas, R.layout.item_lineas);
+            listaRecyclerView.setAdapter(lineaAdapter);
             listaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             listaRecyclerView.setItemAnimator(new DefaultItemAnimator());
         } else {
@@ -131,10 +133,15 @@ public class EstadoSubteFragment extends Fragment {
                     
                     String lineaNombre = jsonObject.getString("LineName");
                     String lineaStatus = jsonObject.getString("LineStatus");
+                    
+                    Log.d(LOG_TAG, lineaNombre +" : "+ lineaStatus);
+                    
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);
                     lineas.add(linea);
                 }
+                lineaAdapter.notifyDataSetChanged();
+                
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e(LOG_TAG, "Error JSONException e: ", e);

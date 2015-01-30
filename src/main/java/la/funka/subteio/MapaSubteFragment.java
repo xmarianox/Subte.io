@@ -19,7 +19,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
@@ -146,7 +145,7 @@ public class MapaSubteFragment extends Fragment {
 
             JSONArray jsonArray = new JSONArray(json);
 
-            polylineOptions = new PolylineOptions();
+            polylineOptions = new PolylineOptions().width(8).geodesic(true);
             markerOptions = new MarkerOptions();
             
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -167,7 +166,7 @@ public class MapaSubteFragment extends Fragment {
 
                     markerOptions.position(new LatLng(estacionLat, estacionLong));
                     markerOptions.title(estacionName);
-                    
+
                     if (lineaName == "A") {
                         polylineOptions.color(Color.parseColor("#05ADDE"));
                         
@@ -179,11 +178,10 @@ public class MapaSubteFragment extends Fragment {
                         polylineOptions.add(new LatLng(estacionLat, estacionLong)).color(Color.parseColor("#087F69"));
                     } else if (lineaName == "E") {
                         polylineOptions.add(new LatLng(estacionLat, estacionLong)).color(Color.parseColor("#6D2281"));
-                    } else {
+                    } else if (lineaName == "H") {
                         polylineOptions.add(new LatLng(estacionLat, estacionLong)).color(Color.parseColor("#FDC903"));
                     }
                     
-                    polylineOptions.width(8);
                     // Agregamos las polylines al mapa
                     //polylineOptions.add(new LatLng(estacionLat, estacionLong));
                     map.addPolyline(polylineOptions);
