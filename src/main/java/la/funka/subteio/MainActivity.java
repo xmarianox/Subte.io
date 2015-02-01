@@ -1,5 +1,6 @@
 package la.funka.subteio;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.Locale;
+
+import la.funka.subteio.service.UpdaterService;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -48,6 +51,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        // Activamos el servicio
+        //startService(new Intent(this, UpdaterService.class));
     }
 
     @Override
@@ -127,5 +133,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return null;
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
