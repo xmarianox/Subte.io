@@ -24,13 +24,13 @@ import java.io.InputStreamReader;
 public class TraerEstadoSubteTask extends AsyncTask<String, Void, String> {
     private static final String LOG_TAG = TraerEstadoSubteTask.class.getSimpleName();
 
-    private ProgressDialog progressDialog;
+    /*private ProgressDialog progressDialog;
     private final Context mContext;
 
     public TraerEstadoSubteTask(Context context) {
         mContext = context;
     }
-
+*/
     @Override
     protected void onPreExecute() {
         //progressDialog = ProgressDialog.show(mContext, "Por favor espere...", "Buscando el estado del Subte...", true);

@@ -1,6 +1,9 @@
 package la.funka.subteio;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +14,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import java.util.Locale;
 
 import la.funka.subteio.service.UpdaterService;
@@ -18,10 +23,29 @@ import la.funka.subteio.service.UpdaterService;
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     SectionsPagerAdapter mSectionsPagerAdapter;
-
     ViewPager mViewPager;
+    
+    // service
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            
+            if (bundle != null) {
+                String string = bundle.getString(UpdaterService.FILEPATH);
+                int resultCode = bundle.getInt(UpdaterService.RESULT);
+                
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(MainActivity.this, "Descarga completa. URI: " + string, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Fallo la descarga.", Toast.LENGTH_SHORT).show();
+                }
+                
+            }
+            
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +75,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
-        // Activamos el servicio
-        //startService(new Intent(this, UpdaterService.class));
     }
 
     @Override
@@ -72,6 +93,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            
+            Intent intent = new Intent(this, UpdaterService.class);
+            intent.putExtra(UpdaterService.FILENAME, "estado.json");
+            intent.putExtra(UpdaterService.URL, "http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
+            startService(intent);
+            
             return true;
         }
 
@@ -136,7 +163,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(UpdaterService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 }
