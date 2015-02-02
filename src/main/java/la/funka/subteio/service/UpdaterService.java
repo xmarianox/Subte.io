@@ -15,6 +15,7 @@ import java.net.URL;
 /**
  * Service tutorial
  * http://www.vogella.com/tutorials/AndroidServices/article.html
+ * https://www.udacity.com/course/viewer#!/c-ud853/l-1614738811/e-1664298683/m-1664298684
  * */
 public class UpdaterService extends IntentService {
     // Log
