@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import la.funka.subteio.service.MyServices;
@@ -49,8 +50,8 @@ public class EstadoSubteFragment extends Fragment {
 
         if (utils.isNetworkAvailable(getActivity())) {
             // Enviamos la consulta a la api.
-            System.out.println("ingresamos al if");
-            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(),MyServices.class));
+            System.out.println("Ejecutamos el Servicio");
+            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(), MyServices.class));
 
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);

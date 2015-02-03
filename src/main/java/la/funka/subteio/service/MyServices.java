@@ -14,7 +14,7 @@ import la.funka.subteio.TraerEstadoSubteTask;
  */
 public class MyServices extends Service {
 
-    private int mInterval = 5000; // 5 seconds by default, can be changed later
+    private int mInterval = 900000; // 15 minutes
 
     @Override
     public void onCreate() {
@@ -27,8 +27,8 @@ public class MyServices extends Service {
     }
 
     public void myTaskRepeat(){
-        System.out.println("Probando cada 5 segundos");
-        //new TraerEstadoSubteTask().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
+        System.out.println("Se ejecuta el TASK");
+        new TraerEstadoSubteTask().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
     }
 
     @Override
