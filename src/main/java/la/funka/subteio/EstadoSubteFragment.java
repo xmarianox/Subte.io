@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import la.funka.subteio.service.MyServices;
 import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
@@ -31,6 +32,7 @@ public class EstadoSubteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         return rootView;
+
     }
     
     
@@ -47,8 +49,8 @@ public class EstadoSubteFragment extends Fragment {
 
         if (utils.isNetworkAvailable(getActivity())) {
             // Enviamos la consulta a la api.
-
-            new TraerEstadoSubteTask().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
+            System.out.println("ingresamos al if");
+            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(),MyServices.class));
 
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
