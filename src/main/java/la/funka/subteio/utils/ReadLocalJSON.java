@@ -78,33 +78,31 @@ public class ReadLocalJSON {
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                Estaciones estacion_item = new Estaciones();
+                Estaciones itemEstacion = new Estaciones();
                 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                
-                /** ID de la linea */
-                estacion_item.setLine_id(jsonObject.getInt("ID"));
-                /** Nombre de la Linea */
-                estacion_item.setLine_name(jsonObject.getString("LINEA"));
+                // ID de la linea
+                itemEstacion.setLine_id(jsonObject.getInt("ID"));
+                // Nombre de la Linea
+                itemEstacion.setLine_name(jsonObject.getString("LINEA"));
+                // Listado de estaciones dependiendo de la linea;
+                JSONArray listadoDeEstaciones = jsonObject.getJSONArray("ESTACIONES");
 
-                /** Listado de estaciones dependiendo de la linea; */
-                JSONArray estaciones_list = jsonObject.getJSONArray("ESTACIONES");
-
-                for (int j = 0; j < estaciones_list.length(); j++) {
-                    JSONObject estacionesObject = estaciones_list.getJSONObject(j);
-                    /** Nombre de la estacion_item */
-                    estacion_item.setStation_name(estacionesObject.getString("ESTACION"));
-
-                    estacion_item.setLatitude(estacionesObject.getDouble("LATITUD"));
-                    estacion_item.setLogitude(estacionesObject.getDouble("LONGITUD"));
+                for (int j = 0; j < listadoDeEstaciones.length(); j++) {
+                    JSONObject estacionesObject = listadoDeEstaciones.getJSONObject(j);
+                    // Nombre de la itemEstacion
+                    itemEstacion.setStation_name(estacionesObject.getString("ESTACION"));
+                    // Location
+                    itemEstacion.setLatitude(estacionesObject.getDouble("LATITUD"));
+                    itemEstacion.setLogitude(estacionesObject.getDouble("LONGITUD"));
                     /** Accesibilidad
-                    estacion_item.setAscensores(estacionesObject.getInt("ASCENSOR"));
-                    estacion_item.setEscaleras(estacionesObject.getInt("ESCALERA"));
-                    estacion_item.setAdaptado(estacionesObject.getString("ADAPTADO"));
-                    estacion_item.setAccesible(estacionesObject.getString("ACCESIBLE"));
+                    itemEstacion.setAscensores(estacionesObject.getInt("ASCENSOR"));
+                    itemEstacion.setEscaleras(estacionesObject.getInt("ESCALERA"));
+                    itemEstacion.setAdaptado(estacionesObject.getString("ADAPTADO"));
+                    itemEstacion.setAccesible(estacionesObject.getString("ACCESIBLE"));
                     */
+                    estaciones.add(itemEstacion);
                 }
-                estaciones.add(estacion_item);
             }
         } catch (IOException e) {
             e.printStackTrace();
