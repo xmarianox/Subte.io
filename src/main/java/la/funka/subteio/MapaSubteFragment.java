@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -34,25 +35,23 @@ import la.funka.subteio.utils.ReadLocalJSON;
 
 
 public class MapaSubteFragment extends Fragment {
-
-    private static final String LOG_TAG = MapaSubteFragment.class.getSimpleName();
     
+    /** LOG_TAG */
+    private static final String LOG_TAG = MapaSubteFragment.class.getSimpleName();
+    /** GMAPS */
     private MapView mMapView;
     private GoogleMap mMap;
     private Bundle mBundle;
-    
-    private ArrayList<Estaciones> estaciones_points = new ArrayList<Estaciones>();
 
     static final LatLng PALERMO = new LatLng(-34.5784220229043, -58.4257114410852);
-    static final LatLng RETIRO = new LatLng(-34.591193809372, -58.374018216823);
-    static LatLng USER_LOCATION = PALERMO;
+    /** Location */
+    static LatLng USER_LOCATION;
     static Location location;
+    static String provider;
 
-    private String json = "";
-    private ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
-    private BufferedReader bufferedReader;
-    private StringBuilder stringBuilder;
-    
+    /** Marker & Polylines */
+    private ArrayList<Estaciones> estacionesListObj = new ArrayList<Estaciones>();
+
     public MapaSubteFragment() {
     }
 
@@ -77,7 +76,7 @@ public class MapaSubteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mBundle = savedInstanceState;
         
-        onLocationChange(location);
+        onLocationChanged(location);
     }
 
     private void setUpMapIfNeeded(View rootView) {
@@ -97,69 +96,77 @@ public class MapaSubteFragment extends Fragment {
         mMap.setMyLocationEnabled(true);
         Log.d(LOG_TAG, "setUpMapa "+ USER_LOCATION.toString());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(USER_LOCATION, 13));
-
-        //Polyline line_d = mMap.addPolyline();
         // Markers
         parseGeoJson(mMap);
     }
     
     public void getUserLocation(Context context) {
         // Location Manager
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);        
         Criteria criteria = new Criteria();
-        location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        provider = locationManager.getBestProvider(criteria, false);
+        location = locationManager.getLastKnownLocation(provider);
+
         if (location != null) {
-            double latidude = location.getLatitude();
-            double longitude = location.getLongitude();
+            Log.d(LOG_TAG, "getUserLocation(); Provider :" + provider + "Fue seleccionado.");
             
-            USER_LOCATION = new LatLng(latidude, longitude);
-            
-            Log.d(LOG_TAG, "getUserLocation() " + USER_LOCATION.toString());
+            onLocationChanged(location);
+        } else {
+            Log.d(LOG_TAG, "getUserLocation(); Location not available");
+            USER_LOCATION = PALERMO;
         }
     }
 
-    public void onLocationChange(Location location) {
-        this.location = location;
-        Log.d(LOG_TAG, "onLocationChange() " + USER_LOCATION.toString());
+    public void onLocationChanged(Location location) {
+        USER_LOCATION = PALERMO;
+        /**
+        int latidude = (int) (location.getLatitude());
+        int longitude = (int) (location.getLongitude());
+        Log.d(LOG_TAG, "onLocationChanged(). latidude: " + String.valueOf(latidude) + ", longitude: " + String.valueOf(longitude));
+        USER_LOCATION = new LatLng(latidude, longitude);
+        */
     }
     
     public void parseGeoJson(GoogleMap map) {
+        /**
+         * OLD CODE.
         PolylineOptions polylineOptions;
         MarkerOptions markerOptions;
         String estacionName;
         double estacionLat;
         double estacionLong;
-        
+
         try {
             stringBuilder = new StringBuilder();
             bufferedReader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("estaciones.json")));
+
+            polylineOptions = new PolylineOptions().width(8).geodesic(true);
+            markerOptions = new MarkerOptions();
 
             String line = "";
 
             while ((line=bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
-        
+
             bufferedReader.close();
             json = stringBuilder.toString();
 
             JSONArray jsonArray = new JSONArray(json);
 
-            polylineOptions = new PolylineOptions().width(8).geodesic(true);
-            markerOptions = new MarkerOptions();
-            
             for (int i = 0; i < jsonArray.length(); i++) {
+                Estaciones itemEstacion = new Estaciones();
 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                /** Nombre de la Linea */
+
                 String lineaName = jsonObject.getString("LINEA");
 
-                /** Listado de estaciones dependiendo de la linea; */
+                // Listado de estaciones dependiendo de la linea;
                 JSONArray estaciones_list = jsonObject.getJSONArray("ESTACIONES");
 
                 for (int j = 0; j < estaciones_list.length(); j++) {
                     JSONObject estacionesObject = estaciones_list.getJSONObject(j);
-     
+
                     estacionName = estacionesObject.getString("ESTACION");
                     estacionLat  = estacionesObject.getDouble("LATITUD");
                     estacionLong = estacionesObject.getDouble("LONGITUD");
@@ -169,7 +176,7 @@ public class MapaSubteFragment extends Fragment {
 
                     if (lineaName == "A") {
                         polylineOptions.color(Color.parseColor("#05ADDE"));
-                        
+
                     } else if (lineaName == "B") {
                         polylineOptions.add(new LatLng(estacionLat, estacionLong)).color(Color.parseColor("#E81526"));
                     } else if (lineaName == "C") {
@@ -181,12 +188,12 @@ public class MapaSubteFragment extends Fragment {
                     } else if (lineaName == "H") {
                         polylineOptions.add(new LatLng(estacionLat, estacionLong)).color(Color.parseColor("#FDC903"));
                     }
-                    
                     // Agregamos las polylines al mapa
                     //polylineOptions.add(new LatLng(estacionLat, estacionLong));
                     map.addPolyline(polylineOptions);
                     // Agregamos los points
                     map.addMarker(markerOptions);
+                    estacionesListObj.add(itemEstacion);
                 }
             }
         } catch (IOException e) {
@@ -196,8 +203,33 @@ public class MapaSubteFragment extends Fragment {
             e.printStackTrace();
             Toast.makeText(getActivity(), "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
         }
+
+        * DATA sobre mapas
+        * https://github.com/ddewaele/GoogleMapsV2WithActionBarSherlock/blob/master/GoogleMapsV2WithActionBarSherlock/docs/part2.md
+        */
+
+        MarkerOptions markerOptions;
+        PolylineOptions polylineOptions;
+
+        ReadLocalJSON readLocalJSON = new ReadLocalJSON();
+        estacionesListObj = readLocalJSON.getEstaciones(getActivity());
+
+        polylineOptions = new PolylineOptions().width(8).geodesic(true);
+        markerOptions = new MarkerOptions();
+
+        Log.d(LOG_TAG, "Cantidad de estaciones :" + String.valueOf(estacionesListObj.size()));
+
+        for (int i = 0; i < estacionesListObj.size(); i++) {
+            markerOptions.position(new LatLng(estacionesListObj.get(i).getLatitude(),  estacionesListObj.get(i).getLogitude()));
+            markerOptions.title(estacionesListObj.get(i).getStation_name());
+
+            Log.d(LOG_TAG, "Linea:" + estacionesListObj.get(i).getLine_name() + " - Estacion:" + estacionesListObj.get(i).getStation_name());
+
+            // Agregamos las estaciones al mapa.
+            map.addMarker(markerOptions);
+        }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
