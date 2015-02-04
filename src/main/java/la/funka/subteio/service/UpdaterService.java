@@ -1,16 +1,13 @@
 package la.funka.subteio.service;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Environment;
+import android.util.Log;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import la.funka.subteio.TraerEstadoSubteTask;
 
 /**
  * Service tutorial
@@ -20,74 +17,39 @@ import java.net.URL;
 public class UpdaterService extends IntentService {
     // Log
     private final static String LOG_TAG = UpdaterService.class.getSimpleName();
-    // Result
-    private int result = Activity.RESULT_CANCELED;
-    
-    public static final String URL = "url";
-    public static final String FILENAME = "filename";
-    public static final String FILEPATH = "filepath";
-    public static final String RESULT = "result";
-    public static final String NOTIFICATION = "la.funca.subteio.service.updaterservice";
-    
-    
+    private int mInterval = 30000;
+
     public UpdaterService() {
         super("UpdaterService");
     }
-    
-    // Llamada asyncronica
+
+    @Override
+    public void onCreate() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                loopTasck();
+            }
+        }, 0, mInterval);
+    }
+
+    private void loopTasck() {
+        Log.d(LOG_TAG, "Se ejecuta el loopTask");
+        new TraerEstadoSubteTask().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        String urlPath = intent.getStringExtra(URL);
-        String fileName = intent.getStringExtra(FILENAME);
-        
-        File output = new File(Environment.getDataDirectory(), fileName);
-        
-        if (output.exists()) {
-            output.delete();
-        }
-
-        InputStream stream = null;
-        FileOutputStream fos = null;
-        
-        try {
-            URL url = new URL(urlPath);
-            stream = url.openConnection().getInputStream();
-            InputStreamReader reader = new InputStreamReader(stream);
-            fos = new FileOutputStream(output.getPath());
-            int next = -1;
-            
-            while ((next = reader.read()) != -1) {
-                fos.write(next);
-            }
-            // successfully finished
-            result = Activity.RESULT_OK;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        publishResults(output.getAbsolutePath(), result);
     }
-
-    private void publishResults (String outputPath, int result) {
-        Intent intent = new Intent(NOTIFICATION);
-        intent.putExtra(FILEPATH, outputPath);
-        intent.putExtra(RESULT, result);
-        sendBroadcast(intent);
-    }
-
 }

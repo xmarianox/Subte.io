@@ -14,7 +14,8 @@ import la.funka.subteio.TraerEstadoSubteTask;
  */
 public class MyServices extends Service {
 
-    private int mInterval = 900000; // 15 minutes
+    //private int mInterval = 900000;
+    private int mInterval = 30000;
 
     @Override
     public void onCreate() {
@@ -33,7 +34,6 @@ public class MyServices extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-
         return START_STICKY;
     }
 

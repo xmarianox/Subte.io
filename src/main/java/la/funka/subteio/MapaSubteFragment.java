@@ -217,13 +217,13 @@ public class MapaSubteFragment extends Fragment {
         polylineOptions = new PolylineOptions().width(8).geodesic(true);
         markerOptions = new MarkerOptions();
 
-        Log.d(LOG_TAG, "Cantidad de estaciones :" + String.valueOf(estacionesListObj.size()));
+        //Log.d(LOG_TAG, "Cantidad de estaciones :" + String.valueOf(estacionesListObj.size()));
 
         for (int i = 0; i < estacionesListObj.size(); i++) {
             markerOptions.position(new LatLng(estacionesListObj.get(i).getLatitude(),  estacionesListObj.get(i).getLogitude()));
             markerOptions.title(estacionesListObj.get(i).getStation_name());
 
-            Log.d(LOG_TAG, "Linea:" + estacionesListObj.get(i).getLine_name() + " - Estacion:" + estacionesListObj.get(i).getStation_name());
+            //Log.d(LOG_TAG, "Linea:" + estacionesListObj.get(i).getLine_name() + " - Estacion:" + estacionesListObj.get(i).getStation_name());
 
             // Agregamos las estaciones al mapa.
             map.addMarker(markerOptions);

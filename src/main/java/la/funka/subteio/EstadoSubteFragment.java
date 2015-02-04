@@ -6,15 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
-import la.funka.subteio.service.MyServices;
+import la.funka.subteio.service.UpdaterService;
 import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
@@ -36,7 +36,6 @@ public class EstadoSubteFragment extends Fragment {
 
     }
     
-    
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -50,8 +49,8 @@ public class EstadoSubteFragment extends Fragment {
 
         if (utils.isNetworkAvailable(getActivity())) {
             // Enviamos la consulta a la api.
-            System.out.println("Ejecutamos el Servicio");
-            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(), MyServices.class));
+            Log.d(LOG_TAG, "Corremos el service");
+            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(), UpdaterService.class));
 
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
