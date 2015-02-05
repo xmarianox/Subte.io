@@ -80,6 +80,13 @@ public class UpdaterService extends IntentService {
         prefsEditor.commit();
 
         /*
+        Leer los datos de las SharedPreferences
+        http://stackoverflow.com/questions/5918328/is-it-ok-to-save-a-json-array-in-sharedpreferences
+        
+        String strJson = sharedPref.getString("jsondata");
+        if(strJson != null) JSONObject jsonData = new JSONObject(strJson);
+        
+        
         try {
             JSONArray jsonArray = new JSONArray(result);
 
