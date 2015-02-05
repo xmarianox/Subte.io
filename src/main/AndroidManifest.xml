@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.UpdaterService" />
+        <service android:name=".service.DownloadService" />
 
         <meta-data
             android:name="com.google.android.gms.version"

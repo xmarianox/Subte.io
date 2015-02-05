@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import la.funka.subteio.service.UpdaterService;
+import la.funka.subteio.service.DownloadService;
+import la.funka.subteio.utils.ReadLocalJSON;
 import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
@@ -39,18 +40,17 @@ public class EstadoSubteFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /** FAKE DATA
-        * final ArrayList<Linea> lineas;
-        * ReadLocalJSON readLocalJSON = new ReadLocalJSON();
-        * lineas = readLocalJSON.getLineas(getActivity());
-        */
-
         Util utils = new Util();
 
         if (utils.isNetworkAvailable(getActivity())) {
             // Enviamos la consulta a la api.
             Log.d(LOG_TAG, "Corremos el service");
-            this.getActivity().startService(new Intent(this.getActivity().getBaseContext(), UpdaterService.class));
+
+            Intent intentService = new Intent(Intent.ACTION_SYNC, null, getActivity(), DownloadService.class);
+            this.getActivity().startService(intentService);
+
+            ReadLocalJSON readLocalJSON = new ReadLocalJSON();
+            lineas = readLocalJSON.getLineas(getActivity());
 
             // RecyclerView
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);

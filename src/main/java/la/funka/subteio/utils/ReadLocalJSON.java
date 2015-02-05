@@ -1,7 +1,8 @@
 package la.funka.subteio.utils;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,40 +26,30 @@ public class ReadLocalJSON {
     private StringBuilder stringBuilder;
     
     public ArrayList<Linea> getLineas(Context context) {
-        
-        try {
-           stringBuilder = new StringBuilder();
-           bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open("estado.json")));
-            
-           String line = "";
-            
-           while ((line=bufferedReader.readLine()) != null) {
-               stringBuilder.append(line);
-           }
-    
-           bufferedReader.close();
-           json = stringBuilder.toString();
 
-           JSONArray jsonArray = new JSONArray(json);
-           
-           for (int i = 0; i < jsonArray.length(); i++) {
-               Linea linea = new Linea();
+        SharedPreferences offlineData = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String dataset = offlineData.getString("estadoJSON", null);
 
-               JSONObject jsonObject = jsonArray.getJSONObject(i);
-               linea.setName(jsonObject.getString("LineName"));
-               linea.setStatus(jsonObject.getString("LineStatus"));
-               lineas.add(linea);
-           }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
+        if(dataset != null) {
+
+            try {
+                JSONArray jsonArray = new JSONArray(dataset);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    Linea linea = new Linea();
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    linea.setName(jsonObject.getString("LineName"));
+                    linea.setStatus(jsonObject.getString("LineStatus"));
+                    lineas.add(linea);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
+            }
         }
         return lineas;
     }
-
 
     public ArrayList<Estaciones> getEstaciones(Context context) {
 
