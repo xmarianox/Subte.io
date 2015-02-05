@@ -98,8 +98,6 @@ public class UpdaterService extends IntentService {
 
                 lineas.add(linea);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(LOG_TAG, "Error JSONException e: ", e);
