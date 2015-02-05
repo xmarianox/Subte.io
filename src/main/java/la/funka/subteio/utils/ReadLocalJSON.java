@@ -24,14 +24,14 @@ public class ReadLocalJSON {
     private ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
-    
+
+    // Retorna la lista para el listView
     public ArrayList<Linea> getLineas(Context context) {
 
         SharedPreferences offlineData = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String dataset = offlineData.getString("estadoJSON", null);
 
         if(dataset != null) {
-
             try {
                 JSONArray jsonArray = new JSONArray(dataset);
 
@@ -51,6 +51,7 @@ public class ReadLocalJSON {
         return lineas;
     }
 
+    // Retorna la lista de Estaciones para el Mapa
     public ArrayList<Estaciones> getEstaciones(Context context) {
 
         try {
