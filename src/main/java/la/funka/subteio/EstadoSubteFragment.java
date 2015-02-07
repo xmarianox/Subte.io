@@ -166,7 +166,7 @@ public class EstadoSubteFragment extends Fragment {
                     int intFrecuencia = Integer.parseInt(lineaFrecuencia);
                     int frecuenciaFinal = intFrecuencia / 60;
 
-                    Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
+                    //Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
 
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);
