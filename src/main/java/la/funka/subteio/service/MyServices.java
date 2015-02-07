@@ -7,8 +7,6 @@ import android.os.IBinder;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import la.funka.subteio.TraerEstadoSubteTask;
-
 /**
  * Created by Niger on 03/02/2015.
  */
@@ -29,7 +27,6 @@ public class MyServices extends Service {
 
     public void myTaskRepeat(){
         System.out.println("Se ejecuta el TASK");
-        new TraerEstadoSubteTask().execute("http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias");
     }
 
     @Override
