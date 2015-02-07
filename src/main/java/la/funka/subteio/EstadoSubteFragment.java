@@ -68,17 +68,16 @@ public class EstadoSubteFragment extends Fragment {
              * ReadLocalJSON readLocalJSON = new ReadLocalJSON();
              * lineas = readLocalJSON.getLineas(getActivity());
              */
-            // RecyclerView
-            listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
-            listaRecyclerView.setHasFixedSize(true);
-            listaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            listaRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
             // Enviamos la consulta a la api.
             new TraerEstadoSubteTask().execute(URL);
 
             // RefreshLayout
             swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefreshLayout);
+            swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -87,17 +86,18 @@ public class EstadoSubteFragment extends Fragment {
                 }
             });
 
+            // RecyclerView
+            listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
+            listaRecyclerView.setHasFixedSize(true);
+
+            lineaAdapter = new LineaAdapter(lineas, R.layout.item_lineas);
+            listaRecyclerView.setAdapter(lineaAdapter);
+
+            listaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            listaRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         } else {
             Toast.makeText(getActivity(), "Ha ocurrido un error, estas seguro de que tienes internet??", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void UpdateList() {
-        lineaAdapter = new LineaAdapter(lineas, R.layout.item_lineas);
-        listaRecyclerView.setAdapter(lineaAdapter);
-
-        if (swipeRefreshLayout.isRefreshing()) {
-            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -150,13 +150,20 @@ public class EstadoSubteFragment extends Fragment {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Linea linea = new Linea();
 
+                    if (lineas.size() == 8) {
+                        lineas.clear();
+                    }
+
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                     String lineaNombre = jsonObject.getString("LineName");
                     String lineaStatus = jsonObject.getString("LineStatus");
-                    String LineaFrecuencia = jsonObject.getString("LineFrequency");
+                    String lineaFrecuencia = jsonObject.getString("LineFrequency");
 
-                    Log.d(LOG_TAG, lineaNombre +" : "+ lineaStatus + ":" + LineaFrecuencia);
+                    int intFrecuencia = Integer.parseInt(lineaFrecuencia);
+                    int frecuenciaFinal = intFrecuencia / 60;
+
+                    Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
 
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);
@@ -164,7 +171,10 @@ public class EstadoSubteFragment extends Fragment {
                     lineas.add(linea);
                 }
 
-                UpdateList();
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
                 lineaAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {

@@ -38,7 +38,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Click en la linea", Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), "Click en la linea: " + name.getText().toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
