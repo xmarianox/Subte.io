@@ -1,6 +1,7 @@
 package la.funka.subteio;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -81,6 +83,7 @@ public class EstadoSubteFragment extends Fragment {
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
+                    Toast.makeText(getActivity(), "Actualizando el estado del Subte...", Toast.LENGTH_LONG).show();
                     // Refrescamos los datos de la api.
                     new TraerEstadoSubteTask().execute(URL);
                 }

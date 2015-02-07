@@ -1,6 +1,8 @@
 package la.funka.subteio;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> {
-    
+
+    private static final String LOG_TAG = LineaAdapter.class.getSimpleName();
+
     private ArrayList<Linea> lineas;
     private int itemLayout;
 
@@ -53,6 +57,11 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         Linea linea = lineas.get(position);
         holder.name.setText(linea.getName());
         holder.status.setText(linea.getStatus());
+        holder.status.setTextColor(Color.parseColor("#2196F3"));
+        //Log.d(LOG_TAG, "Status: " + holder.status.getText());
+        if (holder.status.getText().length() != 6) {
+            holder.status.setTextColor(Color.parseColor("#FF5252"));
+        }
 
         switch (linea.getName()){
             case "A":
@@ -87,6 +96,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
                 holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_u);
                 break;
         }
+
         holder.itemView.setTag(linea);
     }
 
