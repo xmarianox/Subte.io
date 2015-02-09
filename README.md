@@ -6,6 +6,12 @@ La información sobre las estaciones y las lineas es tomada desde los dataset de
 
 El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 
+## Desarrollada por:
+
+- Mariano  [@xsincrueldadx](https://twitter.com/xsincrueldadx)
+- Ezequiel [@itswhoyall](https://twitter.com/itswhoyall)
+- Emilio   [@emiliovirtual](https://twitter.com/emiliovirtual)
+
 ## License
 
     Copyright 2014 Subte.io
@@ -21,9 +27,3 @@ El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-## Desarrollada por:
-
-- Mariano  [@xsincrueldadx](https://twitter.com/xsincrueldadx)
-- Ezequiel [@itswhoyall](https://twitter.com/itswhoyall)
-- Emilio   [@emiliovirtual](https://twitter.com/emiliovirtual)
