@@ -1,7 +1,7 @@
 package la.funka.subteio;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.TextView;
 
 
 public class DetalleLineaActivity extends ActionBarActivity {
@@ -20,7 +20,7 @@ public class DetalleLineaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detalle_linea);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetalleLineaFragment())
                     .commit();
         }
     }
@@ -50,15 +50,21 @@ public class DetalleLineaActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class DetalleLineaFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public DetalleLineaFragment() {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detalle_linea, container, false);
+
+            Intent intent = getActivity().getIntent();
+            String lineaName = "Pantalla de detalle de la linea " + intent.getStringExtra("NOMBRE_LINEA");
+
+            TextView textView = (TextView) rootView.findViewById(R.id.detalle_linea_name);
+            textView.setText(lineaName);
+
             return rootView;
         }
     }

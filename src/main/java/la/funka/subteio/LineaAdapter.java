@@ -47,11 +47,10 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            //Toast.makeText(v.getContext(), "Click en la linea: " + name.getText().toString(), Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(v.getContext(), DetalleLineaActivity.class);
-            //intent.putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
-            Log.d(LOG_TAG, "click");
-
+            Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
+            //Log.d(LOG_TAG, name.getText().toString());
+            intentDetalle.putExtra("NOMBRE_LINEA", name.getText().toString());
+            v.getContext().startActivity(intentDetalle);
         }
     }
 
@@ -108,7 +107,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
 
         holder.itemView.setTag(linea);
         
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
@@ -116,8 +115,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
                 //intentDetalle.putExtra("NOMBRE_LINEA", (android.os.Parcelable) lineas.get(position));
                 v.getContext().startActivity(intentDetalle);
             }
-        });
-        
+        });*/
     }
 
     @Override
