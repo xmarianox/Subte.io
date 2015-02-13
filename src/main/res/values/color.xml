@@ -20,6 +20,6 @@
     <color name="linea_p">#FDBA2D</color>
     <color name="linea_u">#F56D1C</color>
     <!-- Colores Status linea -->
-    <color name="status_normal">#090</color>
+    <color name="status_normal">#009900</color>
     <color name="status_alerta">#E91627</color>
 </resources>

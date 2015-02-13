@@ -1,6 +1,8 @@
 package la.funka.subteio;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         public TextView name;
         public TextView status;
         public LinearLayout content_shape;
+        public CardView cardView;
         
         public ViewHolder(View itemView) {
             super(itemView);
@@ -38,11 +41,17 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             name = (TextView) itemView.findViewById(R.id.linea_id);
             status = (TextView) itemView.findViewById(R.id.linea_status);
             content_shape = (LinearLayout) itemView.findViewById(R.id.content_shape);
+            
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Click en la linea: " + name.getText().toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(v.getContext(), "Click en la linea: " + name.getText().toString(), Toast.LENGTH_SHORT).show();
+            //Intent intent = new Intent(v.getContext(), DetalleLineaActivity.class);
+            //intent.putExtra(DetailActivity.DATE_KEY, cursor.getString(COL_WEATHER_DATE));
+            Log.d(LOG_TAG, "click");
+
         }
     }
 
@@ -53,14 +62,14 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Linea linea = lineas.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final Linea linea = lineas.get(position);
         holder.name.setText(linea.getName());
         holder.status.setText(linea.getStatus());
-        holder.status.setTextColor(Color.parseColor("#2196F3"));
+        holder.status.setTextColor(Color.parseColor("#009900"));
         //Log.d(LOG_TAG, "Status: " + holder.status.getText());
         if (holder.status.getText().length() != 6) {
-            holder.status.setTextColor(Color.parseColor("#FF5252"));
+            holder.status.setTextColor(Color.parseColor("#E91627"));
         }
 
         switch (linea.getName()){
@@ -98,6 +107,17 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         }
 
         holder.itemView.setTag(linea);
+        
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
+                Log.d(LOG_TAG, lineas.get(position).toString());
+                //intentDetalle.putExtra("NOMBRE_LINEA", (android.os.Parcelable) lineas.get(position));
+                v.getContext().startActivity(intentDetalle);
+            }
+        });
+        
     }
 
     @Override

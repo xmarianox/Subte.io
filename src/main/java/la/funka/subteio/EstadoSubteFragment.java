@@ -98,7 +98,6 @@ public class EstadoSubteFragment extends Fragment {
 
             listaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             listaRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         } else {
             Toast.makeText(getActivity(), "Ha ocurrido un error, estas seguro de que tienes internet??", Toast.LENGTH_LONG).show();
         }
@@ -163,9 +162,8 @@ public class EstadoSubteFragment extends Fragment {
                     String lineaStatus = jsonObject.getString("LineStatus");
                     String lineaFrecuencia = jsonObject.getString("LineFrequency");
 
-                    int intFrecuencia = Integer.parseInt(lineaFrecuencia);
-                    int frecuenciaFinal = intFrecuencia / 60;
-
+                    //int intFrecuencia = Integer.parseInt(lineaFrecuencia);
+                    //int frecuenciaFinal = intFrecuencia / 60;
                     //Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
 
                     linea.setName(lineaNombre);
