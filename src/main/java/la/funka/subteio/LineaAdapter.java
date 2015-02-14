@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnClickListener {
         public TextView name;
         public TextView status;
-        public LinearLayout content_shape;
+        public ImageView image_line;
         public CardView cardView;
         
         public ViewHolder(View itemView) {
@@ -38,17 +39,15 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             
             itemView.setOnClickListener(this);
 
-            name = (TextView) itemView.findViewById(R.id.linea_id);
+            //name = (TextView) itemView.findViewById(R.id.linea_id);
             status = (TextView) itemView.findViewById(R.id.linea_status);
-            content_shape = (LinearLayout) itemView.findViewById(R.id.content_shape);
-            
+            image_line = (ImageView) itemView.findViewById(R.id.image_line);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
         }
 
         @Override
         public void onClick(View v) {
             Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
-            //Log.d(LOG_TAG, name.getText().toString());
             intentDetalle.putExtra("NOMBRE_LINEA", name.getText().toString());
             v.getContext().startActivity(intentDetalle);
         }
@@ -63,59 +62,47 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Linea linea = lineas.get(position);
-        holder.name.setText(linea.getName());
+        //holder.name.setText(linea.getName());
         holder.status.setText(linea.getStatus());
         holder.status.setTextColor(Color.parseColor("#009900"));
-        //Log.d(LOG_TAG, "Status: " + holder.status.getText());
         if (holder.status.getText().length() != 6) {
             holder.status.setTextColor(Color.parseColor("#E91627"));
         }
 
         switch (linea.getName()){
             case "A":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_a);
+                holder.image_line.setImageResource(R.drawable.item_linea_a);
                 break;
 
             case "B":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_b);
+                holder.image_line.setImageResource(R.drawable.item_linea_b);
                 break;
 
             case "C":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_c);
+                holder.image_line.setImageResource(R.drawable.item_linea_c);
                 break;
 
             case "D":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_d);
+                holder.image_line.setImageResource(R.drawable.item_linea_d);
                 break;
 
             case "E":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_e);
+                holder.image_line.setImageResource(R.drawable.item_linea_e);
                 break;
             
             case "H":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_h);
+                holder.image_line.setImageResource(R.drawable.item_linea_h);
                 break;
             
             case "P":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_p);
+                holder.image_line.setImageResource(R.drawable.item_linea_a);
                 break;
 
             case "U":
-                holder.content_shape.setBackgroundResource(R.drawable.background_item_linea_u);
+                holder.image_line.setImageResource(R.drawable.item_linea_a);
                 break;
         }
-
         holder.itemView.setTag(linea);
-        
-        /*holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
-                Log.d(LOG_TAG, lineas.get(position).toString());
-                //intentDetalle.putExtra("NOMBRE_LINEA", (android.os.Parcelable) lineas.get(position));
-                v.getContext().startActivity(intentDetalle);
-            }
-        });*/
     }
 
     @Override
