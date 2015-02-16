@@ -48,7 +48,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             Intent intentDetalle = new Intent(v.getContext(), DetalleLineaActivity.class);
-            intentDetalle.putExtra("NOMBRE_LINEA", name.getText().toString());
+            intentDetalle.putExtra("NOMBRE_LINEA", image_line.getContentDescription());
             v.getContext().startActivity(intentDetalle);
         }
     }
@@ -63,6 +63,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Linea linea = lineas.get(position);
         //holder.name.setText(linea.getName());
+        holder.image_line.setContentDescription(linea.getName());
         holder.status.setText(linea.getStatus());
         holder.status.setTextColor(Color.parseColor("#009900"));
         if (holder.status.getText().length() != 6) {
