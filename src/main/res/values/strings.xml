@@ -6,6 +6,5 @@
     <string name="title_section_estado">Estado</string>
     <string name="title_section_mapa">Mapa</string>
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>
