@@ -11,4 +11,24 @@ public class Util {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    public double convertStringToDouble(String str){
+        try {
+            double doubleNum = Double.parseDouble(str);
+            return doubleNum;
+        }catch (Exception err){
+            return 0.0;
+        }
+    }
+
+    public double calculateFrequency(String str){
+        double frequency;
+        if (str != ""){
+            frequency = convertStringToDouble(str);
+            frequency = frequency / 60.0;
+        }else{
+            frequency = 0.0;
+        }
+        return frequency;
+    }
 }

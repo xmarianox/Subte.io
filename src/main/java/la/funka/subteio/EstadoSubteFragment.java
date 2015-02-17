@@ -33,8 +33,9 @@ import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
 
-    private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
+    Util utils = new Util();
 
+    private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
     // Recycler constants
     private RecyclerView listaRecyclerView;
     private ArrayList<Linea> lineas = new ArrayList<Linea>();
@@ -58,7 +59,7 @@ public class EstadoSubteFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Util utils = new Util();
+
 
         if (utils.isNetworkAvailable(getActivity())) {
             /**
@@ -164,7 +165,12 @@ public class EstadoSubteFragment extends Fragment {
 
                     //int intFrecuencia = Integer.parseInt(lineaFrecuencia);
                     //int frecuenciaFinal = intFrecuencia / 60;
-                    //Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
+
+                    double frecuenciaFinal = utils.calculateFrequency(lineaFrecuencia);
+                    Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
+
+                    System.out.println(frecuenciaFinal);
+
 
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);
