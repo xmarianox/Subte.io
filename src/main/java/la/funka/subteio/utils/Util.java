@@ -22,12 +22,9 @@ public class Util {
     }
 
     public double calculateFrequency(String str){
-        double frequency;
-        if (str != ""){
-            frequency = convertStringToDouble(str);
+        double frequency = convertStringToDouble(str);
+        if (frequency != 0.0){
             frequency = frequency / 60.0;
-        }else{
-            frequency = 0.0;
         }
         return frequency;
     }

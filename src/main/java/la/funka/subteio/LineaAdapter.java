@@ -29,9 +29,9 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     }
     
     public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnClickListener {
-        public TextView name;
         public TextView status;
         public ImageView image_line;
+        public TextView frequency;
         public CardView cardView;
         
         public ViewHolder(View itemView) {
@@ -39,7 +39,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             
             itemView.setOnClickListener(this);
 
-            //name = (TextView) itemView.findViewById(R.id.linea_id);
+            frequency = (TextView) itemView.findViewById(R.id.linea_frequency);
             status = (TextView) itemView.findViewById(R.id.linea_status);
             image_line = (ImageView) itemView.findViewById(R.id.image_line);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
@@ -66,6 +66,7 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         holder.image_line.setContentDescription(linea.getName());
         holder.status.setText(linea.getStatus());
         holder.status.setTextColor(Color.parseColor("#009900"));
+        holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
         if (holder.status.getText().length() != 6) {
             holder.status.setTextColor(Color.parseColor("#E91627"));
         }

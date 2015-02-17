@@ -169,12 +169,10 @@ public class EstadoSubteFragment extends Fragment {
                     double frecuenciaFinal = utils.calculateFrequency(lineaFrecuencia);
                     Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
 
-                    System.out.println(frecuenciaFinal);
-
 
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);
-
+                    linea.setFrequency(frecuenciaFinal);
                     lineas.add(linea);
                 }
 

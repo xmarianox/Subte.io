@@ -3,7 +3,7 @@ package la.funka.subteio;
 public class Linea {
     private String name;
     private String status;
-
+    private Double frequency;
 
     public String getName() {
         return name;
@@ -20,5 +20,9 @@ public class Linea {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Double getFrequency(){return frequency;}
+
+    public void setFrequency(Double frequency){this.frequency = frequency;}
 
 }

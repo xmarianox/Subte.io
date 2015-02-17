@@ -41,6 +41,7 @@ public class ReadLocalJSON {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     linea.setName(jsonObject.getString("LineName"));
                     linea.setStatus(jsonObject.getString("LineStatus"));
+                    linea.setFrequency(jsonObject.getDouble("LineFrequency"));
                     lineas.add(linea);
                 }
             } catch (JSONException e) {

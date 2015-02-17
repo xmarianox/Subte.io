@@ -51,7 +51,11 @@
                 android:textStyle="bold"
                 android:text="-"
                 android:id="@+id/linea_status" />
-            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linea_frequency"/>
+
         </LinearLayout>
         
     </LinearLayout>
