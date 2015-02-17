@@ -163,12 +163,8 @@ public class EstadoSubteFragment extends Fragment {
                     String lineaStatus = jsonObject.getString("LineStatus");
                     String lineaFrecuencia = jsonObject.getString("LineFrequency");
 
-                    //int intFrecuencia = Integer.parseInt(lineaFrecuencia);
-                    //int frecuenciaFinal = intFrecuencia / 60;
-
                     double frecuenciaFinal = utils.calculateFrequency(lineaFrecuencia);
                     Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
-
 
                     linea.setName(lineaNombre);
                     linea.setStatus(lineaStatus);

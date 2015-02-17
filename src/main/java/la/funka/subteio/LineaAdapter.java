@@ -62,15 +62,18 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Linea linea = lineas.get(position);
-        //holder.name.setText(linea.getName());
+        // Set atributo linea.
         holder.image_line.setContentDescription(linea.getName());
+        // Set status linea.
         holder.status.setText(linea.getStatus());
+        // Cambiamos el color del texto dependiendo del estado.
         holder.status.setTextColor(Color.parseColor("#009900"));
-        holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
         if (holder.status.getText().length() != 6) {
             holder.status.setTextColor(Color.parseColor("#E91627"));
         }
-
+        // Set frecuencia.
+        holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
+        // Set
         switch (linea.getName()){
             case "A":
                 holder.image_line.setImageResource(R.drawable.item_linea_a);
