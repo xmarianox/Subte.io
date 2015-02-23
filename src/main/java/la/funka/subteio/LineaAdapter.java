@@ -72,7 +72,11 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             holder.status.setTextColor(Color.parseColor("#E91627"));
         }
         // Set frecuencia.
-        holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
+        if (linea.getFrequency()!= 0.0){
+            holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
+        }else{
+            holder.frequency.setText("Sin Estimación");
+        }
         // Set
         switch (linea.getName()){
             case "A":
