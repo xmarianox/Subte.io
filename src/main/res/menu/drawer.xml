@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_home"
+            android:checked="true"
+            android:icon="@drawable/ic_cast_dark"
+            android:title="@string/title_section_estado"/>
+
+        <item
+            android:id="@+id/drawer_favourite"
+            android:icon="@drawable/ic_cast_off_light"
+            android:title="@string/title_section_estado"/>
+
+        <item
+            android:id="@+id/drawer_downloaded"
+            android:icon="@drawable/ic_cast_on_2_light"
+            android:title="@string/title_section_estado"/>
+
+        <item
+            android:id="@+id/drawer_more"
+            android:icon="@drawable/ic_cast_off_light"
+            android:title="@string/title_section_estado"/>
+
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_cast_off_light"
+            android:title="@string/title_section_estado"/>
+
+    </group>
+</menu>
