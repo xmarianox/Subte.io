@@ -20,8 +20,8 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            tools:ignore="MergeRootFrame"/>
+            tools:ignore="MergeRootFrame"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <!-- AppBarLayout-->
         <android.support.design.widget.AppBarLayout
@@ -36,7 +36,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/primary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_scrollFlags="enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways" />
 
         </android.support.design.widget.AppBarLayout>
 

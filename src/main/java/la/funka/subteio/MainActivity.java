@@ -2,12 +2,12 @@ package la.funka.subteio;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -27,14 +27,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Fabric.with(this, new Crashlytics());
-
         setContentView(R.layout.activity_main);
+
+        // Set frabric api.
+        Fabric.with(this, new Crashlytics());
 
         initToolbar();
         setupDrawerLayout();
         content = findViewById(R.id.content);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.container, new EstadoSubteFragment()).commit();
+        }
     }
 
     private void initToolbar() {
@@ -55,32 +59,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                if (menuItem.isChecked()) {
-                    menuItem.setChecked(false);
-                }
-                //Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
-
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
                 switch (menuItem.getItemId()) {
 
                     case R.id.status_view_fragment:
-                        EstadoSubteFragment estadoSubteFragment = new EstadoSubteFragment();
-                        fragmentTransaction.replace(R.id.container, estadoSubteFragment);
-                        fragmentTransaction.commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new EstadoSubteFragment()).commit();
                         return true;
 
                     case R.id.map_view_fragment:
-                        MapaSubteFragment mapaSubteFragment = new MapaSubteFragment();
-                        fragmentTransaction.replace(R.id.container, mapaSubteFragment);
-                        fragmentTransaction.commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapaSubteFragment()).commit();
+                        return true;
+
+                    default:
+                        Log.d(LOG_TAG, "Algo salio mal...");
                         return true;
                 }
-
-
-                return true;
             }
         });
     }
