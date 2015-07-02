@@ -17,7 +17,34 @@
         <item name="android:textColorSecondary">@color/secondary_text</item>
     </style>
 
+    <!-- Section Heading -->
+    <style name="HeaderSection" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@color/section_title</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 
+    <!-- Card Items -->
+    <style name="CardView.Title" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
+    <style name="CardView.Title.Span" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
+
+    <style name="CardView.Status" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="CardView.Status.Span" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+    </style>
 
 </resources>

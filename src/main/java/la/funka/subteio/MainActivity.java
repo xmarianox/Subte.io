@@ -2,7 +2,7 @@ package la.funka.subteio;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -10,6 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+import la.funka.subteio.fragments.EstadoSubteFragment;
+import la.funka.subteio.fragments.MapaSubteFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_main);
 
         initToolbar();
@@ -45,9 +54,32 @@ public class MainActivity extends AppCompatActivity {
         view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
+
+                if (menuItem.isChecked()) {
+                    menuItem.setChecked(false);
+                }
+                //Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
+
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+                switch (menuItem.getItemId()) {
+
+                    case R.id.status_view_fragment:
+                        EstadoSubteFragment estadoSubteFragment = new EstadoSubteFragment();
+                        fragmentTransaction.replace(R.id.container, estadoSubteFragment);
+                        fragmentTransaction.commit();
+                        return true;
+
+                    case R.id.map_view_fragment:
+                        MapaSubteFragment mapaSubteFragment = new MapaSubteFragment();
+                        fragmentTransaction.replace(R.id.container, mapaSubteFragment);
+                        fragmentTransaction.commit();
+                        return true;
+                }
+
+
                 return true;
             }
         });
@@ -62,4 +94,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

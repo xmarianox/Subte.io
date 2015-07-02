@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import la.funka.subteio.Estaciones;
-import la.funka.subteio.Linea;
+import la.funka.subteio.model.Estaciones;
+import la.funka.subteio.model.Linea;
 
 public class ReadLocalJSON {
 

@@ -1,20 +1,20 @@
-package la.funka.subteio;
+package la.funka.subteio.adapters;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import la.funka.subteio.DetalleLineaActivity;
+import la.funka.subteio.R;
+import la.funka.subteio.model.Linea;
 
 public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> {
 
@@ -67,10 +67,10 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         // Set status linea.
         holder.status.setText(linea.getStatus());
         // Cambiamos el color del texto dependiendo del estado.
-        holder.status.setTextColor(Color.parseColor("#009900"));
-        if (holder.status.getText().length() != 6) {
-            holder.status.setTextColor(Color.parseColor("#E91627"));
-        }
+        //holder.status.setTextColor(Color.parseColor("#009900"));
+        //if (holder.status.getText().length() != 6) {
+        //    holder.status.setTextColor(Color.parseColor("#E91627"));
+        //}
         // Set frecuencia.
         if (linea.getFrequency()!= 0.0){
             holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");

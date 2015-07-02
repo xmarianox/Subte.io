@@ -1,4 +1,4 @@
-package la.funka.subteio;
+package la.funka.subteio.utils;
 
 import android.annotation.TargetApi;
 import android.os.Build;

@@ -1,4 +1,4 @@
-package la.funka.subteio;
+package la.funka.subteio.model;
 
 public class Estaciones {
     private int line_id;

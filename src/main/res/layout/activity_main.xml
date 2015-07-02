@@ -15,11 +15,12 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <!-- Fragments? -->
+        <!-- Fragments -->
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
             tools:ignore="MergeRootFrame"/>
 
         <!-- AppBarLayout-->
@@ -35,7 +36,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/primary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="enterAlways" />
 
         </android.support.design.widget.AppBarLayout>
 

@@ -2,9 +2,18 @@
 <resources>
 
     <string name="app_name">Subte.io</string>
+
+    <!-- Menu items -->
     <string name="action_settings">Settings</string>
+
+    <!-- Drawer menu -->
     <string name="title_section_estado">Estado</string>
     <string name="title_section_mapa">Mapa</string>
+
+    <!-- Status View -->
+    <string name="card_item_text_status">Estado de la Línea:</string>
+    <string name="card_item_text_frequency">Frecuencia de trenes:</string>
+
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
 
 </resources>

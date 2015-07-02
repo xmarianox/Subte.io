@@ -1,7 +1,5 @@
-package la.funka.subteio;
+package la.funka.subteio.fragments;
 
-import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -29,6 +26,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import la.funka.subteio.R;
+import la.funka.subteio.adapters.LineaAdapter;
+import la.funka.subteio.model.Linea;
 import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
@@ -59,18 +59,7 @@ public class EstadoSubteFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-
         if (utils.isNetworkAvailable(getActivity())) {
-            /**
-             * IntentService
-             *
-             * Log.d(LOG_TAG, "Corremos el service");
-             * Intent intentService = new Intent(Intent.ACTION_SYNC, null, getActivity(), DownloadService.class);
-             * this.getActivity().startService(intentService);
-             * ReadLocalJSON readLocalJSON = new ReadLocalJSON();
-             * lineas = readLocalJSON.getLineas(getActivity());
-             */
 
             // Enviamos la consulta a la api.
             new TraerEstadoSubteTask().execute(URL);
