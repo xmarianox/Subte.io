@@ -1,7 +1,9 @@
 package la.funka.subteio.fragments;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,8 +26,10 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
 import la.funka.subteio.model.Linea;
@@ -33,18 +37,23 @@ import la.funka.subteio.utils.Util;
 
 public class EstadoSubteFragment extends Fragment {
 
-    Util utils = new Util();
-
     private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
     // Recycler constants
     private RecyclerView listaRecyclerView;
-    private ArrayList<Linea> lineas = new ArrayList<Linea>();
     private LineaAdapter lineaAdapter;
+    private LinearLayout container_recycler;
     // Refresh
     private SwipeRefreshLayout swipeRefreshLayout = null;
+    private ProgressDialog progressDialog;
     // URL
     private String URL = "http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias";
+    //private String API_URL = "http://www.metrovias.com.ar";
 
+    private Util utils;
+
+    // Realm DB.
+    private Realm realm;
+    private RealmResults<Linea> datasetLineas;
 
     public EstadoSubteFragment() {
     }
@@ -53,16 +62,44 @@ public class EstadoSubteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         return rootView;
-
     }
     
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // Definimos la configuracion de la DB.
+        RealmConfiguration config = new RealmConfiguration.Builder(getActivity())
+                .name("lines.realm")
+                .build();
+        // Start Realm Instance
+        realm = Realm.getInstance(config);
+    }
 
-        if (utils.isNetworkAvailable(getActivity())) {
+    @Override
+    public void onResume() {
+        super.onResume();
 
-            // Enviamos la consulta a la api.
-            new TraerEstadoSubteTask().execute(URL);
+        if (lineaAdapter == null) {
+
+            utils = new Util(getActivity());
+
+            container_recycler = (LinearLayout) getActivity().findViewById(R.id.container_recycler);
+
+            // Query para traer todos los items.
+            datasetLineas = realm.where(Linea.class).findAll();
+            Log.d(LOG_TAG, "Query antes del llamadp a la api: " + datasetLineas.size());
+
+            if (datasetLineas.size() == 0) {
+                if (utils.isNetworkConnected()) {
+                    new TraerEstadoSubteTask().execute(URL);
+                } else {
+                    Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
+                }
+
+            } else if (utils.isNetworkConnected()) {
+                new TraerEstadoSubteTask().execute(URL);
+            } else {
+                Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
+            }
 
             // RefreshLayout
             swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefreshLayout);
@@ -70,12 +107,16 @@ public class EstadoSubteFragment extends Fragment {
                     android.R.color.holo_green_light,
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light);
+
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    Toast.makeText(getActivity(), "Actualizando el estado del Subte...", Toast.LENGTH_LONG).show();
                     // Refrescamos los datos de la api.
-                    new TraerEstadoSubteTask().execute(URL);
+                    if (utils.isNetworkConnected()) {
+                        new TraerEstadoSubteTask().execute(URL);
+                    } else {
+                        Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -83,14 +124,38 @@ public class EstadoSubteFragment extends Fragment {
             listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
             listaRecyclerView.setHasFixedSize(true);
 
-            lineaAdapter = new LineaAdapter(lineas, R.layout.item_lineas);
+            lineaAdapter = new LineaAdapter(datasetLineas, R.layout.item_lineas);
             listaRecyclerView.setAdapter(lineaAdapter);
+            setRecyclerViewLayoutManager(listaRecyclerView);
 
-            listaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            listaRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        } else {
-            Toast.makeText(getActivity(), "Ha ocurrido un error, estas seguro de que tienes internet??", Toast.LENGTH_LONG).show();
+            lineaAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
+    /**
+     * Set RecyclerView's LayoutManager
+     */
+    public void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
+        int scrollPosition = 0;
+
+        // If a layout manager has already been set, get current scroll position.
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(defaultItemAnimator);
+
+        recyclerView.scrollToPosition(scrollPosition);
     }
 
     /**
@@ -101,6 +166,12 @@ public class EstadoSubteFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            // show progressbar
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Actualizando el estado del Subte...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
         @Override
@@ -134,44 +205,93 @@ public class EstadoSubteFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String resultado) {
+            progressDialog.dismiss();
 
             try {
-
                 JSONArray jsonArray = new JSONArray(resultado);
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    Linea linea = new Linea();
+                Log.d(LOG_TAG, "Query dentro de la api: " + datasetLineas.size());
+                if (datasetLineas.size() == 0) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        realm.beginTransaction();
+                        Linea lineas = realm.createObject(Linea.class);
 
-                    if (lineas.size() == 8) {
-                        lineas.clear();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        lineas.setName(jsonObject.getString("LineName"));
+                        lineas.setStatus(jsonObject.getString("LineStatus"));
+                        lineas.setFrequency(utils.calculateFrequency(jsonObject.getString("LineFrequency")));
+
+                        realm.commitTransaction();
                     }
 
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-                    String lineaNombre = jsonObject.getString("LineName");
-                    String lineaStatus = jsonObject.getString("LineStatus");
-                    String lineaFrecuencia = jsonObject.getString("LineFrequency");
+                } else if (jsonArray.length() >= 8) {
+                    Log.d(LOG_TAG, "Query dentro de la api si los items que vienen desde la api son >= 8 : " + datasetLineas.size());
+                    realm.beginTransaction();
+                    realm.where(Linea.class).findAll().clear();
+                    realm.commitTransaction();
 
-                    double frecuenciaFinal = utils.calculateFrequency(lineaFrecuencia);
-                    Log.d(LOG_TAG, "Linea: " + lineaNombre +", Estado: "+ lineaStatus + ", Frecuencia: " + frecuenciaFinal);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        realm.beginTransaction();
+                        Linea lineas = realm.createObject(Linea.class);
 
-                    linea.setName(lineaNombre);
-                    linea.setStatus(lineaStatus);
-                    linea.setFrequency(frecuenciaFinal);
-                    lineas.add(linea);
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                        lineas.setName(jsonObject.getString("LineName"));
+                        lineas.setStatus(jsonObject.getString("LineStatus"));
+                        lineas.setFrequency(utils.calculateFrequency(jsonObject.getString("LineFrequency")));
+
+                        realm.commitTransaction();
+                    }
+
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 }
-
-                if (swipeRefreshLayout.isRefreshing()) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
                 lineaAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e(LOG_TAG, "Error JSONException e: ", e);
-                Toast.makeText(getActivity(), "Ocurrio un error al buscar el estado de las lineas...", Toast.LENGTH_SHORT).show();
+                Snackbar.make(container_recycler, "Ocurrio un error...", Snackbar.LENGTH_LONG).show();
             }
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            progressDialog.dismiss();
+        }
     }
+
+
+    /**
+     public void getDataFromApi() {
+
+     RestAdapter restAdapter = new RestAdapter.Builder()
+     .setEndpoint(API_URL)
+     .build();
+
+     SubwayStatusApi api = restAdapter.create(SubwayStatusApi.class);
+     api.getSubwayStatus(new Callback<Line>() {
+    @Override
+    public void success(Line line, Response response) {
+    Log.d(LOG_TAG, "Name: " + line.getLineName() + ", Status: " + line.getLineStatus());
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+    error.printStackTrace();
+    }
+    });
+     List<Line> lines = api.listStatus();
+     for (int i = 0; i < lines.size(); i++) {
+     Log.d(LOG_TAG, "Name: " + lines.get(i).getLineName() + ", Status: " + lines.get(i).getLineStatus());
+     }
+     }
+     */
 }

@@ -10,8 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
+import io.realm.RealmResults;
 import la.funka.subteio.DetalleLineaActivity;
 import la.funka.subteio.R;
 import la.funka.subteio.model.Linea;
@@ -20,10 +19,10 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
 
     private static final String LOG_TAG = LineaAdapter.class.getSimpleName();
 
-    private ArrayList<Linea> lineas;
+    private RealmResults<Linea> lineas;
     private int itemLayout;
 
-    public LineaAdapter(ArrayList<Linea> data, int itemLayout) {
+    public LineaAdapter(RealmResults<Linea> data, int itemLayout) {
         lineas = data;
         this.itemLayout = itemLayout;
     }

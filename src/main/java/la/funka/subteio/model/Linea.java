@@ -1,9 +1,11 @@
 package la.funka.subteio.model;
 
-public class Linea {
+import io.realm.RealmObject;
+
+public class Linea extends RealmObject {
     private String name;
     private String status;
-    private Double frequency;
+    private double frequency;
 
     public String getName() {
         return name;
@@ -21,8 +23,8 @@ public class Linea {
         this.status = status;
     }
 
-    public Double getFrequency(){return frequency;}
+    public double getFrequency(){return frequency;}
 
-    public void setFrequency(Double frequency){this.frequency = frequency;}
+    public void setFrequency(double frequency){this.frequency = frequency;}
 
 }
