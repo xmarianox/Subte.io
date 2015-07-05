@@ -38,10 +38,10 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             
             itemView.setOnClickListener(this);
 
-            frequency = (TextView) itemView.findViewById(R.id.linea_frequency);
-            status = (TextView) itemView.findViewById(R.id.linea_status);
+            frequency  = (TextView) itemView.findViewById(R.id.linea_frequency);
+            status     = (TextView) itemView.findViewById(R.id.linea_status);
             image_line = (ImageView) itemView.findViewById(R.id.image_line);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            cardView   = (CardView) itemView.findViewById(R.id.card_view);
         }
 
         @Override
@@ -65,50 +65,45 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         holder.image_line.setContentDescription(linea.getName());
         // Set status linea.
         holder.status.setText(linea.getStatus());
-        // Cambiamos el color del texto dependiendo del estado.
-        //holder.status.setTextColor(Color.parseColor("#009900"));
-        //if (holder.status.getText().length() != 6) {
-        //    holder.status.setTextColor(Color.parseColor("#E91627"));
-        //}
         // Set frecuencia.
         if (linea.getFrequency()!= 0.0){
-            holder.frequency.setText("Frecuencia: " + String.valueOf(Math.round(linea.getFrequency()))+" min");
+            holder.frequency.setText(String.valueOf(Math.round(linea.getFrequency()))+" min");
         }else{
             holder.frequency.setText("Sin Estimación");
         }
         // Set
         switch (linea.getName()){
             case "A":
-                holder.image_line.setImageResource(R.drawable.item_linea_a);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_a);
                 break;
 
             case "B":
-                holder.image_line.setImageResource(R.drawable.item_linea_b);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_b);
                 break;
 
             case "C":
-                holder.image_line.setImageResource(R.drawable.item_linea_c);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_c);
                 break;
 
             case "D":
-                holder.image_line.setImageResource(R.drawable.item_linea_d);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_d);
                 break;
 
             case "E":
-                holder.image_line.setImageResource(R.drawable.item_linea_e);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_e);
                 break;
             
             case "H":
-                holder.image_line.setImageResource(R.drawable.item_linea_h);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_h);
                 break;
             
             case "P":
-                holder.image_line.setImageResource(R.drawable.item_linea_a);
+                holder.image_line.setImageResource(R.drawable.ic_item_linea_p);
                 break;
 
-            case "U":
-                holder.image_line.setImageResource(R.drawable.item_linea_a);
-                break;
+            //case "U":
+            //    holder.image_line.setImageResource(R.drawable.ic_item_linea_a);
+            //    break;
         }
         holder.itemView.setTag(linea);
     }

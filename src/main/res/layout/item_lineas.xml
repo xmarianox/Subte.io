@@ -9,7 +9,8 @@
     card_view:cardCornerRadius="0dp"
     card_view:cardElevation="0dp"
     card_view:cardUseCompatPadding="true"
-    card_view:cardPreventCornerOverlap="false">
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardBackgroundColor="@color/window">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -28,16 +29,16 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/image_line"
-                android:src="@drawable/item_linea_a"/>
+                android:background="@color/secondary_text"/>
             
         </LinearLayout>
         
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:paddingLeft="16dp"
             android:paddingRight="8dp">
 
@@ -56,8 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CardView.Title.Span"
-                    android:id="@+id/linea_status"
-                    android:text="Normal"/>
+                    android:id="@+id/linea_status"/>
 
             </LinearLayout>
 
@@ -76,8 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CardView.Status.Span"
-                    android:id="@+id/linea_frequency"
-                    android:text="5 min"/>
+                    android:id="@+id/linea_frequency"/>
 
             </LinearLayout>
 

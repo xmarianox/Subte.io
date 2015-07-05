@@ -38,8 +38,6 @@ import la.funka.subteio.utils.Util;
 public class EstadoSubteFragment extends Fragment {
 
     private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
-    // Recycler constants
-    private RecyclerView listaRecyclerView;
     private LineaAdapter lineaAdapter;
     private LinearLayout container_recycler;
     // Refresh
@@ -121,7 +119,7 @@ public class EstadoSubteFragment extends Fragment {
             });
 
             // RecyclerView
-            listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
+            RecyclerView listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
             listaRecyclerView.setHasFixedSize(true);
 
             lineaAdapter = new LineaAdapter(datasetLineas, R.layout.item_lineas);
@@ -225,6 +223,8 @@ public class EstadoSubteFragment extends Fragment {
                         realm.commitTransaction();
                     }
 
+                    removeUnunsedLine("U");
+
                     if (swipeRefreshLayout.isRefreshing()) {
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -247,6 +247,7 @@ public class EstadoSubteFragment extends Fragment {
 
                         realm.commitTransaction();
                     }
+                    removeUnunsedLine("U");
 
                     if (swipeRefreshLayout.isRefreshing()) {
                         swipeRefreshLayout.setRefreshing(false);
@@ -268,6 +269,23 @@ public class EstadoSubteFragment extends Fragment {
         }
     }
 
+    /**
+     * Limpiamos el item de la linea que no se utiliza.
+     * */
+    public void removeUnunsedLine(String lineItem) {
+        // Limpiamos la linea U de la colección.
+        RealmResults<Linea> results = realm.where(Linea.class)
+                .equalTo("name", lineItem)
+                .findAll();
+
+        realm.beginTransaction();
+        results.remove(0);
+        results.removeLast();
+        realm.commitTransaction();
+
+        // Actualizamos el dataset.
+        lineaAdapter.notifyDataSetChanged();
+    }
 
     /**
      public void getDataFromApi() {
