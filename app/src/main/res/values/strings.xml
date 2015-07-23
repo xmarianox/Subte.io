@@ -16,4 +16,7 @@
 
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
 
+
+    <!-- Error Message -->
+    <string name="network_error">Ha ocurrido un error al intentar actualizar los datos. Asegúrate de estar conectado a internet.</string>
 </resources>
