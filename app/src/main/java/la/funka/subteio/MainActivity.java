@@ -17,6 +17,10 @@ import io.fabric.sdk.android.Fabric;
 import la.funka.subteio.fragments.EstadoSubteFragment;
 import la.funka.subteio.fragments.MapaSubteFragment;
 
+/**
+ * Created by Mariano Molina on 03/02/2015.
+ * Twitter: @xsincrueldadx
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();

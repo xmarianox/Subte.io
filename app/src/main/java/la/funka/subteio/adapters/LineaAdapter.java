@@ -13,18 +13,25 @@ import android.widget.TextView;
 import io.realm.RealmResults;
 import la.funka.subteio.DetalleLineaActivity;
 import la.funka.subteio.R;
-import la.funka.subteio.model.Linea;
+import la.funka.subteio.model.SubwayLine;
+import la.funka.subteio.utils.Util;
 
+/**
+ * Created by Mariano Molina on 01/07/2015.
+ * Twitter: @xsincrueldadx
+ */
 public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> {
 
     private static final String LOG_TAG = LineaAdapter.class.getSimpleName();
+    private Util utils;
 
-    private RealmResults<Linea> lineas;
+    private RealmResults<SubwayLine> lineas;
     private int itemLayout;
 
-    public LineaAdapter(RealmResults<Linea> data, int itemLayout) {
+    public LineaAdapter(RealmResults<SubwayLine> data, int itemLayout, Util util) {
         lineas = data;
         this.itemLayout = itemLayout;
+        this.utils = util;
     }
     
     public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnClickListener {
@@ -60,19 +67,20 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Linea linea = lineas.get(position);
+        final SubwayLine linea = lineas.get(position);
         // Set atributo linea.
-        holder.image_line.setContentDescription(linea.getName());
+        holder.image_line.setContentDescription(linea.getLineName());
         // Set status linea.
-        holder.status.setText(linea.getStatus());
+        holder.status.setText(linea.getLineStatus());
         // Set frecuencia.
-        if (linea.getFrequency()!= 0.0){
-            holder.frequency.setText(String.valueOf(Math.round(linea.getFrequency()))+" min");
+        double frequency = utils.calculateFrequency(linea.getLineFrequency());
+        if (frequency != 0.0){
+            holder.frequency.setText(String.valueOf(Math.round(frequency))+" min");
         }else{
             holder.frequency.setText("Sin Estimación");
         }
         // Set
-        switch (linea.getName()){
+        switch (linea.getLineName()){
             case "A":
                 holder.image_line.setImageResource(R.drawable.ic_item_linea_a);
                 break;

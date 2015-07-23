@@ -1,7 +1,6 @@
 package la.funka.subteio.fragments;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,26 +14,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
-import la.funka.subteio.model.Linea;
+import la.funka.subteio.model.SubwayLine;
+import la.funka.subteio.service.SubwayStatusApi;
 import la.funka.subteio.utils.Util;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 
+/**
+ * Created by Mariano Molina on 03/02/2015.
+ * Twitter: @xsincrueldadx
+ */
 public class EstadoSubteFragment extends Fragment {
 
     private static final String LOG_TAG = EstadoSubteFragment.class.getSimpleName();
@@ -45,21 +50,19 @@ public class EstadoSubteFragment extends Fragment {
     private ProgressDialog progressDialog;
     // URL
     private String URL = "http://www.metrovias.com.ar/Subterraneos/Estado?site=Metrovias";
-    //private String API_URL = "http://www.metrovias.com.ar";
 
     private Util utils;
 
     // Realm DB.
     private Realm realm;
-    private RealmResults<Linea> datasetLineas;
+    private RealmResults<SubwayLine> datasetLineas;
 
     public EstadoSubteFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
     
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -83,24 +86,27 @@ public class EstadoSubteFragment extends Fragment {
             container_recycler = (LinearLayout) getActivity().findViewById(R.id.container_recycler);
 
             // Query para traer todos los items.
-            datasetLineas = realm.where(Linea.class).findAll();
+            datasetLineas = realm.where(SubwayLine.class).findAll();
             Log.d(LOG_TAG, "Query antes del llamadp a la api: " + datasetLineas.size());
 
             if (datasetLineas.size() == 0) {
                 if (utils.isNetworkConnected()) {
-                    new TraerEstadoSubteTask().execute(URL);
+                    //new TraerEstadoSubteTask().execute(URL);
+                    getDataFromApi();
                 } else {
                     Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
                 }
 
             } else if (utils.isNetworkConnected()) {
-                new TraerEstadoSubteTask().execute(URL);
+                getDataFromApi();
+
+                //new TraerEstadoSubteTask().execute(URL);
             } else {
                 Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
             }
 
             // RefreshLayout
-            swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefreshLayout);
+            /*swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefreshLayout);
             swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
                     android.R.color.holo_green_light,
                     android.R.color.holo_orange_light,
@@ -111,18 +117,18 @@ public class EstadoSubteFragment extends Fragment {
                 public void onRefresh() {
                     // Refrescamos los datos de la api.
                     if (utils.isNetworkConnected()) {
-                        new TraerEstadoSubteTask().execute(URL);
+                        //new TraerEstadoSubteTask().execute(URL);
                     } else {
                         Snackbar.make(container_recycler, "Ha ocurrido un error, estas seguro de que tienes internet??", Snackbar.LENGTH_LONG).show();
                     }
                 }
-            });
+            });*/
 
             // RecyclerView
             RecyclerView listaRecyclerView = (RecyclerView) getActivity().findViewById(R.id.lineas_estado_list);
             listaRecyclerView.setHasFixedSize(true);
 
-            lineaAdapter = new LineaAdapter(datasetLineas, R.layout.item_lineas);
+            lineaAdapter = new LineaAdapter(datasetLineas, R.layout.item_lineas, utils);
             listaRecyclerView.setAdapter(lineaAdapter);
             setRecyclerViewLayoutManager(listaRecyclerView);
 
@@ -159,7 +165,7 @@ public class EstadoSubteFragment extends Fragment {
     /**
      * API estado del subte.
      * * * */
-    private class TraerEstadoSubteTask extends AsyncTask<String, Void, String> {
+    /*private class TraerEstadoSubteTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -267,15 +273,15 @@ public class EstadoSubteFragment extends Fragment {
             super.onCancelled();
             progressDialog.dismiss();
         }
-    }
+    }*/
 
     /**
      * Limpiamos el item de la linea que no se utiliza.
      * */
     public void removeUnunsedLine(String lineItem) {
         // Limpiamos la linea U de la colección.
-        RealmResults<Linea> results = realm.where(Linea.class)
-                .equalTo("name", lineItem)
+        RealmResults<SubwayLine> results = realm.where(SubwayLine.class)
+                .equalTo("lineName", lineItem)
                 .findAll();
 
         realm.beginTransaction();
@@ -287,29 +293,44 @@ public class EstadoSubteFragment extends Fragment {
         lineaAdapter.notifyDataSetChanged();
     }
 
-    /**
-     public void getDataFromApi() {
+    public void getDataFromApi() {
+        String API_URL = "http://www.metrovias.com.ar";
 
-     RestAdapter restAdapter = new RestAdapter.Builder()
-     .setEndpoint(API_URL)
-     .build();
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
 
-     SubwayStatusApi api = restAdapter.create(SubwayStatusApi.class);
-     api.getSubwayStatus(new Callback<Line>() {
-    @Override
-    public void success(Line line, Response response) {
-    Log.d(LOG_TAG, "Name: " + line.getLineName() + ", Status: " + line.getLineStatus());
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(API_URL)
+                .setConverter(new GsonConverter(gson))
+                .build();
+
+        SubwayStatusApi subwayStatusApi = restAdapter.create(SubwayStatusApi.class);
+
+        subwayStatusApi.loadSubwayStatus(new Callback<List<SubwayLine>>() {
+            @Override
+            public void success(List<SubwayLine> subwayLine, Response response) {
+                Log.d(LOG_TAG, "Response: " + subwayLine.size());
+                // Guardamos la data en cache.
+                realm.beginTransaction();
+                List<SubwayLine> realmSubwayStatus = realm.copyToRealmOrUpdate(subwayLine);
+                realm.commitTransaction();
+                // Eliminamos la linea que no se utiliza.
+                removeUnunsedLine("U");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(LOG_TAG, "ERROR: " + error.getLocalizedMessage());
+            }
+        });
     }
-
-    @Override
-    public void failure(RetrofitError error) {
-    error.printStackTrace();
-    }
-    });
-     List<Line> lines = api.listStatus();
-     for (int i = 0; i < lines.size(); i++) {
-     Log.d(LOG_TAG, "Name: " + lines.get(i).getLineName() + ", Status: " + lines.get(i).getLineStatus());
-     }
-     }
-     */
 }

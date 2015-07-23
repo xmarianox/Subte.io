@@ -6,6 +6,7 @@ import android.view.Window;
 
 /**
  * Created by RetinaPro on 1/7/15.
+ * twitter: @xsincrueldadx
  */
 public class WindowCompatUtils {
 

@@ -1,8 +1,6 @@
 package la.funka.subteio.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -15,42 +13,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import la.funka.subteio.model.Estaciones;
-import la.funka.subteio.model.Linea;
 
+/**
+ * Created by Mariano Molina on 03/02/2015.
+ * Twitter: @xsincrueldadx
+ */
 public class ReadLocalJSON {
 
     private String json = "";
-    private ArrayList<Linea> lineas = new ArrayList<Linea>();
-    private ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
+    private ArrayList<Estaciones> estaciones = new ArrayList<>();
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
-
-    // Retorna la lista para el listView
-    public ArrayList<Linea> getLineas(Context context) {
-
-        SharedPreferences offlineData = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String dataset = offlineData.getString("estadoJSON", null);
-
-        if(dataset != null) {
-            try {
-                JSONArray jsonArray = new JSONArray(dataset);
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    Linea linea = new Linea();
-
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    linea.setName(jsonObject.getString("LineName"));
-                    linea.setStatus(jsonObject.getString("LineStatus"));
-                    linea.setFrequency(jsonObject.getDouble("LineFrequency"));
-                    lineas.add(linea);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
-            }
-        }
-        return lineas;
-    }
 
     // Retorna la lista de Estaciones para el Mapa
     public ArrayList<Estaciones> getEstaciones(Context context) {
@@ -59,7 +32,7 @@ public class ReadLocalJSON {
             stringBuilder = new StringBuilder();
             bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open("estaciones.json")));
 
-            String line = "";
+            String line;
 
             while ((line=bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
@@ -97,10 +70,7 @@ public class ReadLocalJSON {
                     estaciones.add(itemEstacion);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
             Toast.makeText(context, "No se pudieron obtener datos", Toast.LENGTH_SHORT).show();
         }

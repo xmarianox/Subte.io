@@ -8,11 +8,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Niger on 03/02/2015.
+ * Created by Mariano Molina on 03/02/2015.
+ * Twitter: @xsincrueldadx
  */
 public class MyServices extends Service {
 
-    //private int mInterval = 900000;
     private int mInterval = 30000;
 
     @Override

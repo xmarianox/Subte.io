@@ -4,6 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/**
+ * Created by Mariano Molina on 03/02/2015.
+ * Twitter: @xsincrueldadx
+ */
 public class Util {
 
     Context context;
@@ -15,17 +19,12 @@ public class Util {
     public boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return networkInfo != null;
     }
 
     public double convertStringToDouble(String str){
         try {
-            double doubleNum = Double.parseDouble(str);
-            return doubleNum;
+            return Double.parseDouble(str);
         }catch (Exception err){
             return 0.0;
         }

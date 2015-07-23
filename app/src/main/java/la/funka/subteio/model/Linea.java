@@ -2,6 +2,10 @@ package la.funka.subteio.model;
 
 import io.realm.RealmObject;
 
+/**
+ * Created by marianomolina on 22/7/15.
+ * twitter: @xsincrueldadx
+ */
 public class Linea extends RealmObject {
     private String name;
     private String status;

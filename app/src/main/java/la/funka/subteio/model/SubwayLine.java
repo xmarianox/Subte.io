@@ -3,13 +3,19 @@ package la.funka.subteio.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
- * Created by RetinaPro on 3/7/15.
+ * Created by marianomolina on 22/7/15.
+ * twitter: @xsincrueldadx
  */
-public class Line {
+public class SubwayLine extends RealmObject{
+
 
     @SerializedName("LineName")
     @Expose
+    @PrimaryKey
     private String lineName;
 
     @SerializedName("LineStatus")
