@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.model.SubwayLine;
@@ -27,6 +28,13 @@ public class LoadSubwayData {
 
     private static final String TAG = "LoadSubwayData";
     private Realm realm;
+
+    private RealmChangeListener realmChangeListener = new RealmChangeListener() {
+        @Override
+        public void onChange() {
+            realm.refresh();
+        }
+    };
 
     public LoadSubwayData(Realm realm) {
         this.realm = realm;
@@ -67,6 +75,7 @@ public class LoadSubwayData {
                 realm.commitTransaction();
                 // Eliminamos la linea que no se utiliza.
                 removeUnunsedLine("U");
+                realm.addChangeListener(realmChangeListener);
             }
 
             @Override

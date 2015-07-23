@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import la.funka.subteio.R;
@@ -37,6 +38,13 @@ public class EstadoSubteFragment extends Fragment {
     private AsyncTask task;
     // Realm DB.
     private Realm realm;
+    private RealmChangeListener realmChangeListener = new RealmChangeListener() {
+        @Override
+        public void onChange() {
+            realm.refresh();
+            lineaAdapter.notifyDataSetChanged();
+        }
+    };
 
     public EstadoSubteFragment() {
     }
@@ -72,6 +80,7 @@ public class EstadoSubteFragment extends Fragment {
 
             if (utils.isNetworkConnected()) {
                 new LoadSubwayData(realm).getDataFromApi();
+                realm.addChangeListener(realmChangeListener);
             } else {
                 Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
             }
@@ -88,7 +97,8 @@ public class EstadoSubteFragment extends Fragment {
                 public void onRefresh() {
                     // Refrescamos los datos de la api.
                     if (utils.isNetworkConnected()) {
-                         task = new UpdateSubwayStatus().execute();
+                        task = new UpdateSubwayStatus().execute();
+                        realm.addChangeListener(realmChangeListener);
                     } else {
                         Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
                     }
@@ -103,7 +113,7 @@ public class EstadoSubteFragment extends Fragment {
             listaRecyclerView.setAdapter(lineaAdapter);
             setRecyclerViewLayoutManager(listaRecyclerView);
 
-            lineaAdapter.notifyDataSetChanged();
+            realm.addChangeListener(realmChangeListener);
         }
     }
 
@@ -150,7 +160,7 @@ public class EstadoSubteFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             new LoadSubwayData(realm).getDataFromApi();
-            lineaAdapter.notifyDataSetChanged();
+            realm.addChangeListener(realmChangeListener);
             return "Update";
         }
 
