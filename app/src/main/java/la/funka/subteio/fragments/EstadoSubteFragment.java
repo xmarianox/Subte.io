@@ -150,6 +150,7 @@ public class EstadoSubteFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             new LoadSubwayData(realm).getDataFromApi();
+            lineaAdapter.notifyDataSetChanged();
             return "Update";
         }
 
