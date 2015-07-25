@@ -11,11 +11,7 @@
     <string name="title_section_mapa">Mapa</string>
 
     <!-- Status View -->
-    <string name="card_item_text_status">Estado de la Línea:</string>
-    <string name="card_item_text_frequency">Frecuencia de trenes:</string>
-
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
-
 
     <!-- Error Message -->
     <string name="network_error">Ha ocurrido un error al intentar actualizar los datos. Asegúrate de estar conectado a internet.</string>

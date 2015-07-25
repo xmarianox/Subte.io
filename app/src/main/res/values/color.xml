@@ -4,7 +4,7 @@
     <color name="primary">#FFC107</color>
     <color name="primary_dark">#FFA000</color>
     <color name="primary_light">#FFECB3</color>
-    <color name="window">#FFF</color>
+    <color name="window">#EEEEEF</color>
     <color name="accent">#448AFF</color>
     <color name="accent_translucent">#80448AFF</color>
     <color name="primary_text">#212121</color>
@@ -12,6 +12,7 @@
     <color name="icons">#212121</color>
     <color name="divider">#B6B6B6</color>
     <color name="section_title">#757575</color>
+    <color name="card_background">#FFF</color>
 
     <!-- Colores de las lineas -->
     <color name="linea_a">#05ADDE</color>

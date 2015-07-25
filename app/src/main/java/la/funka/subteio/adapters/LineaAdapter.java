@@ -71,11 +71,11 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
         // Set atributo linea.
         holder.image_line.setContentDescription(linea.getLineName());
         // Set status linea.
-        holder.status.setText(linea.getLineStatus());
+        holder.status.setText("Estado de la Línea: " + linea.getLineStatus());
         // Set frecuencia.
         double frequency = utils.calculateFrequency(linea.getLineFrequency());
         if (frequency != 0.0){
-            holder.frequency.setText(String.valueOf(Math.round(frequency))+" min");
+            holder.frequency.setText("Frecuencia de trenes: " + String.valueOf(Math.round(frequency))+ " min");
         }else{
             holder.frequency.setText("Sin Estimación");
         }
