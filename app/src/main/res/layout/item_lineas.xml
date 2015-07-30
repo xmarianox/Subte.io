@@ -30,7 +30,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/image_line"
-                android:background="@color/secondary_text"/>
+                android:background="@color/secondary_text"
+                android:scaleType="centerCrop"/>
             
         </LinearLayout>
         
