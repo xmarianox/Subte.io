@@ -4,6 +4,7 @@
         android:checkableBehavior="single">
 
         <item
+
             android:id="@+id/status_view_fragment"
             android:checked="true"
             android:icon="@drawable/ic_directions_subway"
