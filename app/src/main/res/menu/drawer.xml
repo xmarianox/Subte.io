@@ -4,14 +4,15 @@
         android:checkableBehavior="single">
 
         <item
+
             android:id="@+id/status_view_fragment"
             android:checked="true"
-            android:icon="@drawable/ic_cast_dark"
+            android:icon="@drawable/ic_directions_subway"
             android:title="@string/title_section_estado"/>
 
         <item
             android:id="@+id/map_view_fragment"
-            android:icon="@drawable/ic_cast_off_light"
+            android:icon="@drawable/ic_map"
             android:title="@string/title_section_mapa"/>
 
     </group>
