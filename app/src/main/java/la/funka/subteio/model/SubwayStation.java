@@ -15,68 +15,55 @@ public class SubwayStation extends RealmObject{
 	@SerializedName("id_station")
 	@Expose
 	@PrimaryKey
-	private
-	int id_station;
+	private int id_station;
 
 	@SerializedName("station_name")
 	@Expose
-	private
-	String station_name;
+	private String station_name;
 
 	@SerializedName("id_line")
 	@Expose
-	private
-	int id_line;
+	private int id_line;
 
 	@SerializedName("line_name")
 	@Expose
-	private
-	String line_name;
+	private String line_name;
 
-	@SerializedName("long")
+	@SerializedName("lon")
 	@Expose
-	private
-	double lon;
+	private double lon;
 
 	@SerializedName("lat")
 	@Expose
-	private
-	double lat;
+	private double lat;
 
 	@SerializedName("address")
 	@Expose
-	private
-	String address;
+	private String address;
 
 	@SerializedName("elevador")
 	@Expose
-	private
-	boolean elevador;
+	private boolean elevador;
 
 	@SerializedName("escalator")
 	@Expose
-	private
-	boolean escalator;
+	private boolean escalator;
 
 	@SerializedName("toilets")
 	@Expose
-	private
-	boolean toilets;
+	private boolean toilets;
 
 	@SerializedName("consultation")
 	@Expose
-	private
-	boolean consultation;
+	private boolean consultation;
 
 	@SerializedName("wifi")
 	@Expose
-	private
-	boolean wifi;
+	private boolean wifi;
 
 	@SerializedName("bus_lines")
 	@Expose
-	private
-	String bus_lines;
+	private String bus_lines;
 
 	public int getId_station() {
 		return id_station;
