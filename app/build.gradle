@@ -41,9 +41,9 @@ dependencies {
     compile 'com.android.support:palette-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.google.android.gms:play-services:7.5.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.4.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true;
     }
-    compile 'io.realm:realm-android:0.81.1'
+    compile 'io.realm:realm-android:0.82.1'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 }

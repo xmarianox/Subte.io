@@ -16,14 +16,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import java.util.ArrayList;
 
 import la.funka.subteio.R;
-import la.funka.subteio.model.Estaciones;
-import la.funka.subteio.utils.ReadLocalJSON;
 
 
 public class MapaSubteFragment extends Fragment {
@@ -42,7 +36,7 @@ public class MapaSubteFragment extends Fragment {
     static String provider;
 
     /** Marker & Polylines */
-    private ArrayList<Estaciones> estacionesListObj = new ArrayList<Estaciones>();
+    //private ArrayList<SubwayStation> subwayStationListObj = new ArrayList<SubwayStation>();
 
     public MapaSubteFragment() {
     }
@@ -147,7 +141,7 @@ public class MapaSubteFragment extends Fragment {
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                Estaciones itemEstacion = new Estaciones();
+                SubwayStation itemEstacion = new SubwayStation();
 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -185,7 +179,7 @@ public class MapaSubteFragment extends Fragment {
                     map.addPolyline(polylineOptions);
                     // Agregamos los points
                     map.addMarker(markerOptions);
-                    estacionesListObj.add(itemEstacion);
+                    subwayStationListObj.add(itemEstacion);
                 }
             }
         } catch (IOException e) {
@@ -198,28 +192,28 @@ public class MapaSubteFragment extends Fragment {
 
         * DATA sobre mapas
         * https://github.com/ddewaele/GoogleMapsV2WithActionBarSherlock/blob/master/GoogleMapsV2WithActionBarSherlock/docs/part2.md
-        */
+        *
 
         MarkerOptions markerOptions;
         PolylineOptions polylineOptions;
 
         ReadLocalJSON readLocalJSON = new ReadLocalJSON();
-        estacionesListObj = readLocalJSON.getEstaciones(getActivity());
+        subwayStationListObj = readLocalJSON.getEstaciones(getActivity());
 
         polylineOptions = new PolylineOptions().width(8).geodesic(true);
         markerOptions = new MarkerOptions();
 
-        //Log.d(LOG_TAG, "Cantidad de estaciones :" + String.valueOf(estacionesListObj.size()));
+        //Log.d(LOG_TAG, "Cantidad de estaciones :" + String.valueOf(subwayStationListObj.size()));
 
-        for (int i = 0; i < estacionesListObj.size(); i++) {
-            markerOptions.position(new LatLng(estacionesListObj.get(i).getLatitude(),  estacionesListObj.get(i).getLogitude()));
-            markerOptions.title(estacionesListObj.get(i).getStation_name());
+        for (int i = 0; i < subwayStationListObj.size(); i++) {
+            markerOptions.position(new LatLng(subwayStationListObj.get(i).getLatitude(),  subwayStationListObj.get(i).getLogitude()));
+            markerOptions.title(subwayStationListObj.get(i).getStation_name());
 
-            //Log.d(LOG_TAG, "Linea:" + estacionesListObj.get(i).getLine_name() + " - Estacion:" + estacionesListObj.get(i).getStation_name());
+            //Log.d(LOG_TAG, "Linea:" + subwayStationListObj.get(i).getLine_name() + " - Estacion:" + subwayStationListObj.get(i).getStation_name());
 
             // Agregamos las estaciones al mapa.
             map.addMarker(markerOptions);
-        }
+        }*/
     }
 
     @Override

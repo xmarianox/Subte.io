@@ -11,8 +11,22 @@
     <string name="title_section_mapa">Mapa</string>
 
     <!-- Status View -->
+    <string name="title_detail_view">Horarios de servicio</string>
+
+
+    <string name="title_cabeceras">Cabeceras</string>
+    <string name="title_dias_habiles">Lunes a Sábado</string>
+    <string name="title_dias_no_habiles">Domingo</string>
+
+    <string name="primero">Primero</string>
+    <string name="ultimo">Último</string>
+
+
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
 
     <!-- Error Message -->
     <string name="network_error">Ha ocurrido un error al intentar actualizar los datos. Asegúrate de estar conectado a internet.</string>
+
+
+
 </resources>

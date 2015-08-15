@@ -12,7 +12,6 @@ import io.realm.annotations.PrimaryKey;
  */
 public class SubwayLine extends RealmObject{
 
-
     @SerializedName("LineName")
     @Expose
     @PrimaryKey

@@ -1,19 +1,16 @@
 package la.funka.subteio;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
+import la.funka.subteio.fragments.DetalleLineaFragment;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -45,6 +42,13 @@ public class DetalleLineaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -67,28 +71,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
         supportPostponeEnterTransition();
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class DetalleLineaFragment extends Fragment {
-
-        public DetalleLineaFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_detalle_linea, container, false);
-
-            Intent intent = getActivity().getIntent();
-            String linea = "Linea " + intent.getStringExtra("NOMBRE_LINEA");
-            String lineaName = "Pantalla de detalle de la linea " + intent.getStringExtra("NOMBRE_LINEA");
-
-            collapsingToolbarLayout.setTitle(linea);
-
-            TextView textView = (TextView) rootView.findViewById(R.id.detalle_linea_name);
-            textView.setText(lineaName);
-
-            return rootView;
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
