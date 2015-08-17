@@ -3,6 +3,9 @@ package la.funka.subteio.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +23,15 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import la.funka.subteio.R;
+import la.funka.subteio.adapters.StationItemAdapter;
 import la.funka.subteio.model.SubwayStation;
 
 /**
@@ -39,6 +43,8 @@ public class DetalleLineaFragment extends Fragment {
     private static final String TAG = "DetalleLineaFragment";
 
     private Realm realm;
+    private RealmResults<SubwayStation> dataset;
+    private StationItemAdapter adapter;
 
     public DetalleLineaFragment() {
     }
@@ -67,25 +73,44 @@ public class DetalleLineaFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Intent intent = getActivity().getIntent();
-        String linea = "Linea " + intent.getStringExtra("NOMBRE_LINEA");
+        if (adapter == null) {
 
-        TextView textView = (TextView) getActivity().findViewById(R.id.detalle_linea_name);
-        textView.setText(linea);
+            Intent intent = getActivity().getIntent();
 
-        List<SubwayStation> stationsList = loadStations();
+            String linea = intent.getStringExtra("NOMBRE_LINEA");
+            String lineaText = "Estaciones Línea " + linea;
 
-        Log.d(TAG, "loadStations :" + stationsList);
+            TextView textView = (TextView) getActivity().findViewById(R.id.detalle_linea_name);
+            textView.setText(lineaText);
+
+            // LoadData
+            loadStations();
+            // initData
+            dataset = realm.where(SubwayStation.class)
+                    .equalTo("line_name", linea)
+                    .findAll();
+
+            Log.d(TAG, dataset.toString());
+
+            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.station_list);
+            recyclerView.setHasFixedSize(true);
+
+            adapter = new StationItemAdapter(dataset, R.layout.item_estacion);
+            recyclerView.setAdapter(adapter);
+            setRecyclerViewLayoutManager(recyclerView);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
-    private List<SubwayStation> loadStations() {
+    private void loadStations() {
 
-        InputStream stream;
+        InputStream stream = null;
 
         try {
             stream = getActivity().getAssets().open("estaciones.json");
         } catch (IOException e) {
-            return null;
+            Log.d(TAG, "loadStations(): " + e.getLocalizedMessage());
         }
 
         // GSON can parse the data.
@@ -106,7 +131,8 @@ public class DetalleLineaFragment extends Fragment {
                 .create();
 
         JsonElement json = new JsonParser().parse(new InputStreamReader(stream));
-        List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {}.getType());
+        List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {
+        }.getType());
 
         // Open a transaction to store items into the realm
         // Use copyToRealm() to convert the objects into proper RealmObjects managed by Realm.
@@ -114,7 +140,27 @@ public class DetalleLineaFragment extends Fragment {
         Collection<SubwayStation> realmStations = realm.copyToRealm(stations);
         realm.commitTransaction();
 
-        return new ArrayList<>(realmStations);
+        //return new ArrayList<>(realmStations);
+    }
+
+    /**
+     * Set RecyclerView's LayoutManager
+     */
+    public void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
+        int scrollPosition = 0;
+
+        // If a layout manager has already been set, get current scroll position.
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(defaultItemAnimator);
+
+        recyclerView.scrollToPosition(scrollPosition);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class LoadSubwayData {
         subwayStatusApi.loadSubwayStatus(new Callback<List<SubwayLine>>() {
             @Override
             public void success(List<SubwayLine> subwayLine, Response response) {
-                Log.d(TAG, "Response: " + subwayLine.size());
+                //Log.d(TAG, "Response: " + subwayLine.size());
                 // Guardamos la data en cache.
                 realm.beginTransaction();
                 List<SubwayLine> realmSubwayStatus = realm.copyToRealmOrUpdate(subwayLine);
