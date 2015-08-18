@@ -13,7 +13,6 @@
     <!-- Status View -->
     <string name="title_detail_view">Horarios de servicio</string>
 
-
     <string name="title_cabeceras">Cabeceras</string>
     <string name="title_dias_habiles">Lunes a Sábado</string>
     <string name="title_dias_no_habiles">Domingo</string>

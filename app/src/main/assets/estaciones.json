@@ -537,7 +537,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":57,
@@ -552,7 +552,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":14,
@@ -567,7 +567,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":15,
@@ -582,7 +582,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":16,
@@ -597,7 +597,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":17,
@@ -612,7 +612,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":18,
@@ -627,7 +627,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":58,
@@ -642,7 +642,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":19,
@@ -657,7 +657,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":69,
@@ -912,7 +912,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":45,
@@ -927,7 +927,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":46,
@@ -942,7 +942,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":47,
@@ -972,7 +972,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":49,
@@ -987,7 +987,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":50,
@@ -1002,7 +1002,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":51,
@@ -1017,7 +1017,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":61,
@@ -1032,7 +1032,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":60,
@@ -1062,7 +1062,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":53,
@@ -1092,7 +1092,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":68,
@@ -1107,7 +1107,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":67,
@@ -1122,7 +1122,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":77,
@@ -1137,7 +1137,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":5,
@@ -1152,7 +1152,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":4,
@@ -1167,7 +1167,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":3,
@@ -1182,7 +1182,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":2,
@@ -1197,7 +1197,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":1,
@@ -1212,7 +1212,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":78,
@@ -1227,7 +1227,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   },
   {
 	"id_station":79,
@@ -1242,6 +1242,6 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "-"
   }
 ]

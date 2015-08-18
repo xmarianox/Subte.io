@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip"
-    android:layout_gravity="center_horizontal|center_vertical">
+    android:id="@+id/station_item"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_gravity="center_vertical"
+    android:clickable="true"
+    android:focusable="true"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="2dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardBackgroundColor="@color/card_background">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/station_name"
-        style="@style/CardView.Title"
-        android:text="San Pedrito" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="6dip"
+        android:layout_gravity="center_vertical">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:id="@+id/station_name"
+            style="@style/CardView.Title"
+            android:text="San Pedrito"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

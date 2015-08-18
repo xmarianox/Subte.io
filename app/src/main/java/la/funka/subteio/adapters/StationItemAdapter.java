@@ -44,17 +44,21 @@ public class StationItemAdapter extends RecyclerView.Adapter<StationItemAdapter.
         }
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
-        return new ViewHolder(view);
+        View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final SubwayStation station = dataset.get(position);
-        holder.stationText.setText(station.getStation_name());
-        holder.itemView.setTag(station);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final SubwayStation stationItem = dataset.get(position);
+
+        holder.stationText.setText(stationItem.getStation_name());
+
+        //holder set tag
+        holder.itemView.setTag(stationItem);
     }
 
     @Override

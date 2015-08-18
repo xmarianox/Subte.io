@@ -8,6 +8,7 @@
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
     </style>
 
 </resources>

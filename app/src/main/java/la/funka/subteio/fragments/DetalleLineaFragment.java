@@ -23,10 +23,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -42,9 +42,16 @@ public class DetalleLineaFragment extends Fragment {
 
     private static final String TAG = "DetalleLineaFragment";
 
-    private Realm realm;
-    private RealmResults<SubwayStation> dataset;
     private StationItemAdapter adapter;
+
+    private Realm realm;
+    private RealmChangeListener realmChangeListener = new RealmChangeListener() {
+        @Override
+        public void onChange() {
+            realm.refresh();
+            adapter.notifyDataSetChanged();
+        }
+    };
 
     public DetalleLineaFragment() {
     }
@@ -85,20 +92,23 @@ public class DetalleLineaFragment extends Fragment {
 
             // LoadData
             loadStations();
+            realm.addChangeListener(realmChangeListener);
+
             // initData
-            dataset = realm.where(SubwayStation.class)
+            RealmResults<SubwayStation> subwayStationsDataset = realm.where(SubwayStation.class)
                     .equalTo("line_name", linea)
                     .findAll();
 
-            Log.d(TAG, dataset.toString());
+            Log.d(TAG, subwayStationsDataset.toString());
 
-            RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.station_list);
-            recyclerView.setHasFixedSize(true);
+            RecyclerView stationsRecyclerList = (RecyclerView) getActivity().findViewById(R.id.stations_recycler_list);
+            stationsRecyclerList.setHasFixedSize(true);
 
-            adapter = new StationItemAdapter(dataset, R.layout.item_estacion);
-            recyclerView.setAdapter(adapter);
-            setRecyclerViewLayoutManager(recyclerView);
-            adapter.notifyDataSetChanged();
+            adapter = new StationItemAdapter(subwayStationsDataset, R.layout.item_estacion);
+            stationsRecyclerList.setAdapter(adapter);
+            setRecyclerViewLayoutManager(stationsRecyclerList);
+
+            realm.addChangeListener(realmChangeListener);
         }
 
     }
@@ -127,20 +137,17 @@ public class DetalleLineaFragment extends Fragment {
             public boolean shouldSkipClass(Class<?> clazz) {
                 return false;
             }
-        })
-                .create();
+        }).create();
 
+        assert stream != null;
         JsonElement json = new JsonParser().parse(new InputStreamReader(stream));
-        List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {
-        }.getType());
+        List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {}.getType());
 
         // Open a transaction to store items into the realm
         // Use copyToRealm() to convert the objects into proper RealmObjects managed by Realm.
         realm.beginTransaction();
-        Collection<SubwayStation> realmStations = realm.copyToRealm(stations);
+        realm.copyToRealmOrUpdate(stations);
         realm.commitTransaction();
-
-        //return new ArrayList<>(realmStations);
     }
 
     /**

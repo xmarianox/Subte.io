@@ -43,10 +43,16 @@
         <item name="android:layout_marginLeft">5dp</item>
     </style>
 
+    <style name="ItemTableTitle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:padding">3dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
     <style name="ItemTable" parent="TextAppearance.AppCompat.Small">
         <item name="android:padding">3dp</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/window</item>
+        <item name="android:textColor">@color/secondary_text</item>
     </style>
 
 </resources>
