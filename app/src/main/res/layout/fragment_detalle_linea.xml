@@ -18,164 +18,184 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/activity_horizontal_list_margin"
-                android:background="@color/card_background">
+                style="@style/CardView.Title"
+                android:layout_marginBottom="8dp"
+                android:text="@string/title_detail_view"/>
 
-                <TextView
+            <!-- Card con los horarios -->
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/station_item"
+                android:layout_gravity="center_vertical"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardPreventCornerOverlap="true"
+                card_view:cardBackgroundColor="@color/card_background">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CardView.Title"
-                    android:text="@string/title_detail_view"/>
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:useDefaultMargins="true"
-                    android:alignmentMode="alignBounds"
-                    android:columnOrderPreserved="false"
-                    android:columnCount="4">
-
-                    <!-- Row 1 -->
-                    <TextView
-                        android:text="@string/title_cabeceras"
-                        style="@style/ItemTableTitle"
-                        android:layout_columnSpan="2"
-                        android:layout_gravity="center_horizontal"/>
-
-                    <TextView android:text="@string/title_dias_habiles"
-                        style="@style/ItemTableTitle"/>
-
-                    <TextView android:text="@string/title_dias_no_habiles"
-                        style="@style/ItemTableTitle" />
-
-                    <!-- Row 2 -->
-                    <TextView android:layout_columnSpan="2"
-                        android:layout_gravity="center_horizontal"/>
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_list_margin">
 
                     <GridLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:columnCount="2">
-
-                        <TextView android:text="@string/primero"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable"/>
-
-                        <TextView android:text="@string/ultimo"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable" />
-
-                    </GridLayout>
-
-                    <GridLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:columnCount="2">
-
-                        <TextView android:text="@string/primero"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable"/>
-
-                        <TextView android:text="@string/ultimo"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable" />
-
-                    </GridLayout>
-
-                    <!-- Row DESDE - HORARIO-->
-                    <TextView
-                        android:text="San Pedrito"
-                        android:layout_columnSpan="2"
-                        android:id="@+id/desde_cabecera"
-                        android:layout_gravity="center_horizontal"/>
-
-                    <GridLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:useDefaultMargins="true"
                         android:alignmentMode="alignBounds"
                         android:columnOrderPreserved="false"
-                        android:columnCount="2">
+                        android:columnCount="4">
 
-                        <TextView android:text="05:00"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable"/>
+                        <!-- Row 1 -->
+                        <TextView
+                            android:text="@string/title_cabeceras"
+                            style="@style/ItemTableTitle"
+                            android:layout_columnSpan="2"
+                            android:layout_gravity="center_horizontal"/>
 
-                        <TextView android:text="22:24"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable" />
+                        <TextView android:text="@string/title_dias_habiles"
+                            style="@style/ItemTableTitle"/>
+
+                        <TextView android:text="@string/title_dias_no_habiles"
+                            style="@style/ItemTableTitle" />
+
+                        <!-- Row 2 -->
+                        <TextView android:layout_columnSpan="2"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2">
+
+                            <TextView android:text="@string/primero"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="@string/ultimo"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2">
+
+                            <TextView android:text="@string/primero"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="@string/ultimo"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
+
+                        <!-- Row DESDE - HORARIO-->
+                        <TextView
+                            android:text="San Pedrito"
+                            android:layout_columnSpan="2"
+                            android:paddingTop="8dp"
+                            android:id="@+id/desde_cabecera"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:useDefaultMargins="true"
+                            android:alignmentMode="alignBounds"
+                            android:columnOrderPreserved="false"
+                            android:columnCount="2">
+
+                            <TextView android:text="05:00"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="22:24"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:useDefaultMargins="true"
+                            android:alignmentMode="alignBounds"
+                            android:columnOrderPreserved="false"
+                            android:columnCount="2">
+
+                            <TextView android:text="08:00"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="22:00"
+                                android:layout_gravity="center_horizontal"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
+
+                        <!-- Row HASTA - HORARIO-->
+                        <TextView
+                            android:text="San Pedrito"
+                            android:layout_columnSpan="2"
+                            android:paddingTop="8dp"
+                            android:id="@+id/hasta_cabecera"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:useDefaultMargins="true"
+                            android:alignmentMode="alignBounds"
+                            android:columnOrderPreserved="false"
+                            android:columnCount="2">
+
+                            <TextView android:text="05:00"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="22:24"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
+
+                        <GridLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:useDefaultMargins="true"
+                            android:alignmentMode="alignBounds"
+                            android:columnOrderPreserved="false"
+                            android:columnCount="2">
+
+                            <TextView android:text="08:00"
+                                style="@style/ItemTable"/>
+
+                            <TextView android:text="22:00"
+                                style="@style/ItemTable" />
+
+                        </GridLayout>
 
                     </GridLayout>
 
-                    <GridLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:useDefaultMargins="true"
-                        android:alignmentMode="alignBounds"
-                        android:columnOrderPreserved="false"
-                        android:columnCount="2">
+                </LinearLayout>
 
-                        <TextView android:text="08:00"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable"/>
-
-                        <TextView android:text="22:00"
-                            android:layout_gravity="center_horizontal"
-                            style="@style/ItemTable" />
-
-                    </GridLayout>
-
-                    <!-- Row HASTA - HORARIO-->
-                    <TextView
-                        android:text="San Pedrito"
-                        android:layout_columnSpan="2"
-                        android:id="@+id/hasta_cabecera"
-                        android:layout_gravity="center_horizontal"/>
-
-                    <GridLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:useDefaultMargins="true"
-                        android:alignmentMode="alignBounds"
-                        android:columnOrderPreserved="false"
-                        android:columnCount="2">
-
-                        <TextView android:text="05:00"
-                            style="@style/ItemTable"/>
-
-                        <TextView android:text="22:24"
-                            style="@style/ItemTable" />
-
-                    </GridLayout>
-
-                    <GridLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:useDefaultMargins="true"
-                        android:alignmentMode="alignBounds"
-                        android:columnOrderPreserved="false"
-                        android:columnCount="2">
-
-                        <TextView android:text="08:00"
-                            style="@style/ItemTable"/>
-
-                        <TextView android:text="22:00"
-                            style="@style/ItemTable" />
-
-                    </GridLayout>
-
-                </GridLayout>
-
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/CardView.Title"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:id="@+id/detalle_linea_name"/>
 
             <android.support.v7.widget.RecyclerView
