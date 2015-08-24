@@ -1,15 +1,17 @@
 package la.funka.subteio.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.ExclusionStrategy;
@@ -23,6 +25,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -31,7 +35,6 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.R;
-import la.funka.subteio.adapters.StationItemAdapter;
 import la.funka.subteio.model.SubwayStation;
 
 /**
@@ -42,14 +45,15 @@ public class DetalleLineaFragment extends Fragment {
 
     private static final String TAG = "DetalleLineaFragment";
 
-    private StationItemAdapter adapter;
+    //private StationItemAdapter adapter;
+    private StableArrayAdapter adapter;
+    ArrayList<String> dataset;
 
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
         public void onChange() {
             realm.refresh();
-            adapter.notifyDataSetChanged();
         }
     };
 
@@ -84,31 +88,83 @@ public class DetalleLineaFragment extends Fragment {
 
             Intent intent = getActivity().getIntent();
 
-            String linea = intent.getStringExtra("NOMBRE_LINEA");
-            String lineaText = "Estaciones Línea " + linea;
+            String EXTRA_NOMBRE_LINEA = intent.getStringExtra("NOMBRE_LINEA");
+            String lineaText = "Estaciones Línea " + EXTRA_NOMBRE_LINEA;
 
             TextView textView = (TextView) getActivity().findViewById(R.id.detalle_linea_name);
             textView.setText(lineaText);
 
             // LoadData
             loadStations();
+
+            // get linea data list
+            getStationsDataset(EXTRA_NOMBRE_LINEA);
+
+            // set listView
+            ListView listView = (ListView) getActivity().findViewById(R.id.listview);
+            adapter = new StableArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, dataset);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // selectedItem
+                    String estacion = (String) parent.getItemAtPosition(position);
+
+                    Log.d(TAG, "click en: " + estacion);
+                }
+            });
+
+            // set listView Height
+            setListViewHeightBasedOnChildren(listView);
+
+            // notify data change
             realm.addChangeListener(realmChangeListener);
+        }
 
-            // initData
-            RealmResults<SubwayStation> subwayStationsDataset = realm.where(SubwayStation.class)
-                    .equalTo("line_name", linea)
-                    .findAll();
+    }
 
-            Log.d(TAG, subwayStationsDataset.toString());
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
 
-            RecyclerView stationsRecyclerList = (RecyclerView) getActivity().findViewById(R.id.stations_recycler_list);
-            stationsRecyclerList.setHasFixedSize(true);
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
 
-            adapter = new StationItemAdapter(subwayStationsDataset, R.layout.item_estacion);
-            stationsRecyclerList.setAdapter(adapter);
-            setRecyclerViewLayoutManager(stationsRecyclerList);
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
 
-            realm.addChangeListener(realmChangeListener);
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    private class StableArrayAdapter extends ArrayAdapter<String> {
+
+        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId,
+                                  List<String> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
         }
 
     }
@@ -123,10 +179,6 @@ public class DetalleLineaFragment extends Fragment {
             Log.d(TAG, "loadStations(): " + e.getLocalizedMessage());
         }
 
-        // GSON can parse the data.
-        // Note there is a bug in GSON 2.3.1 that can cause it to StackOverflow when working with RealmObjects.
-        // To work around this, use the ExclusionStrategy below or downgrade to 1.7.1
-        // See more here: https://code.google.com/p/google-gson/issues/detail?id=440
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(FieldAttributes f) {
@@ -144,30 +196,21 @@ public class DetalleLineaFragment extends Fragment {
         List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {}.getType());
 
         // Open a transaction to store items into the realm
-        // Use copyToRealm() to convert the objects into proper RealmObjects managed by Realm.
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(stations);
         realm.commitTransaction();
     }
 
-    /**
-     * Set RecyclerView's LayoutManager
-     */
-    public void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
-        int scrollPosition = 0;
+    private void getStationsDataset(String lineaName) {
+        // initData
+        RealmResults<SubwayStation> subwayStationsDataset = realm.where(SubwayStation.class)
+                .equalTo("line_name", lineaName)
+                .findAll();
 
-        // If a layout manager has already been set, get current scroll position.
-        if (recyclerView.getLayoutManager() != null) {
-            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        dataset = new ArrayList<>();
+        for (int i = 0; i < subwayStationsDataset.size(); i++) {
+            dataset.add(subwayStationsDataset.get(i).getStation_name());
         }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setItemAnimator(defaultItemAnimator);
-
-        recyclerView.scrollToPosition(scrollPosition);
     }
 
     @Override

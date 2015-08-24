@@ -1,6 +1,9 @@
 package la.funka.subteio.adapters;
 
+
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,54 +18,62 @@ import la.funka.subteio.model.SubwayStation;
  * Created by Mariano Molina on 15/8/15.
  * Twitter: @xsincrueldadx
  */
-public class StationItemAdapter extends RecyclerView.Adapter<StationItemAdapter.ViewHolder> {
+public class StationItemAdapter extends RecyclerView.Adapter<StationItemAdapter.StationViewHolder>{
 
-    private static final String LOG_TAG = StationItemAdapter.class.getSimpleName();
+    private static final String TAG = "StationItemAdapter";
 
-    private RealmResults<SubwayStation> dataset;
+    private RealmResults<SubwayStation> items;
     private int itemLayout;
 
-    public StationItemAdapter(RealmResults<SubwayStation> data, int itemLayout) {
-        dataset = data;
-        this.itemLayout = itemLayout;
+    public StationItemAdapter(RealmResults<SubwayStation> dataset, int layout) {
+        items = dataset;
+        this.itemLayout = layout;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnClickListener {
-        public TextView stationText;
+    public static class StationViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnClickListener {
+        //
+        public TextView stationName;
+        public CardView cardView;
 
-        public ViewHolder(View itemView){
+        public StationViewHolder(View itemView) {
             super(itemView);
 
+            // set onClick
             itemView.setOnClickListener(this);
 
-            stationText = (TextView) itemView.findViewById(R.id.station_name);
+            // set views
+            cardView = (CardView) itemView.findViewById(R.id.station_item);
+            stationName = (TextView) itemView.findViewById(R.id.station_name);
         }
 
+        //
         @Override
         public void onClick(View v) {
-
+            Log.d(TAG, "Click en el item: " + stationName.getText());
         }
     }
 
-
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
-        return new ViewHolder(v);
+    public StationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+        return new StationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        final SubwayStation stationItem = dataset.get(position);
+    public void onBindViewHolder(StationViewHolder holder, int position) {
+        final SubwayStation subwayStationItem = items.get(position);
 
-        holder.stationText.setText(stationItem.getStation_name());
+        Log.d(TAG, "Item recycler: " + subwayStationItem.getStation_name());
 
-        //holder set tag
-        holder.itemView.setTag(stationItem);
+        // set text
+        holder.stationName.setText(subwayStationItem.getStation_name());
+
+        // set Tag
+        holder.itemView.setTag(subwayStationItem);
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return items.size();
     }
 }
