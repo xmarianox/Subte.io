@@ -20,12 +20,143 @@
     <string name="primero">Primero</string>
     <string name="ultimo">Último</string>
 
-
-    <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
-
     <!-- Error Message -->
     <string name="network_error">Ha ocurrido un error al intentar actualizar los datos. Asegúrate de estar conectado a internet.</string>
 
+    <!-- Cabecera linea A -->
+    <string name="cabecera_start_linea_a">San Pedrito</string>
+    <string name="cabecera_end_linea_a">Plaza de Mayo</string>
+    <string name="cabecera_time_linea_a">26 minutos</string>
 
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_a_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_a_ultimo_tren_habil">22.28</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_a_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_a_ultimo_tren_dom">22.08</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_a_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_a_ultimo_tren_habil">22.56</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_a_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_a_ultimo_tren_dom">22.36</string>
+
+
+    <!-- Cabecera linea B -->
+    <string name="cabecera_start_linea_b">J.M Rosas</string>
+    <string name="cabecera_end_linea_b">Alem</string>
+    <string name="cabecera_time_linea_b">27 minutos</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_b_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_b_ultimo_tren_habil">22.21</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_b_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_b_ultimo_tren_dom">22.00</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_b_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_b_ultimo_tren_habil">22.49</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_b_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_b_ultimo_tren_dom">22.08</string>
+
+    <!-- Cabecera linea C -->
+    <string name="cabecera_start_linea_c">Constitucióno</string>
+    <string name="cabecera_end_linea_c">Retiro</string>
+    <string name="cabecera_time_linea_c">13 minutos</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_c_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_c_ultimo_tren_habil">22.45</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_c_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_c_ultimo_tren_dom">22.21</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_c_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_c_ultimo_tren_habil">22.47</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_c_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_c_ultimo_tren_dom">22.23</string>
+
+    <!-- Cabecera linea D -->
+    <string name="cabecera_start_linea_d">C. de Tucumán</string>
+    <string name="cabecera_end_linea_d">Catedral</string>
+    <string name="cabecera_time_linea_d">26 minutos</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_d_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_d_ultimo_tren_habil">22.24</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_d_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_d_ultimo_tren_dom">22.00</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_d_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_d_ultimo_tren_habil">22.51</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_d_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_d_ultimo_tren_dom">22.28</string>
+
+    <!-- Cabecera linea E -->
+    <string name="cabecera_start_linea_e">P. Virreyes</string>
+    <string name="cabecera_end_linea_e">Bolivar</string>
+    <string name="cabecera_time_linea_e">24 minutos</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_e_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_e_ultimo_tren_habil">22.27</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_e_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_e_ultimo_tren_dom">22.03</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_e_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_e_ultimo_tren_habil">22.59</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_e_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_e_ultimo_tren_dom">22.35</string>
+
+    <!-- Cabecera linea H -->
+    <string name="cabecera_start_linea_h">Hospitales</string>
+    <string name="cabecera_end_linea_h">Corrientes</string>
+    <string name="cabecera_time_linea_h">13 minutos</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_start_linea_h_primer_tren_habil">05.00</string>
+    <string name="cabecera_start_linea_h_ultimo_tren_habil">23.06</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_start_linea_h_primer_tren_dom">08.00</string>
+    <string name="cabecera_start_linea_h_ultimo_tren_dom">22.30</string>
+
+    <!-- Días Hábiles -->
+    <string name="cabecera_end_linea_h_primer_tren_habil">05.00</string>
+    <string name="cabecera_end_linea_h_ultimo_tren_habil">23.02</string>
+
+    <!-- DOM/Fer -->
+    <string name="cabecera_end_linea_h_primer_tren_dom">08.00</string>
+    <string name="cabecera_end_linea_h_ultimo_tren_dom">22.30</string>
+
+    <!-- Cabezera linea P -->
+
+
+
+    <!-- Textos a cambiar -->
+    <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
+    <string name="title_activity_detalle_estacion">DetalleEstacion</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
