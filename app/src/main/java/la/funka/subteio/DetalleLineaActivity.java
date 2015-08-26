@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,8 +51,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
     private static final String TAG = "DetalleLineaActivity";
 
     private static CollapsingToolbarLayout collapsingToolbarLayout;
-
-    //private StationItemAdapter adapter;
     private StableArrayAdapter adapter;
     ArrayList<String> dataset;
 
@@ -62,6 +61,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
             realm.refresh();
         }
     };
+
+    private ImageView imageViewEstacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         // Create a new empty instance
         realm = Realm.getInstance(realmConfiguration);
+
+        imageViewEstacion = (ImageView) findViewById(R.id.image_estacion);
     }
 
     @Override
@@ -91,7 +94,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         if (adapter == null) {
 
-            Intent intent = getIntent();
+            final Intent intent = getIntent();
 
             String EXTRA_NOMBRE_LINEA = intent.getStringExtra("NOMBRE_LINEA");
             String lineaText = "Estaciones Línea " + EXTRA_NOMBRE_LINEA;
@@ -117,9 +120,12 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // selectedItem
-                    String estacion = (String) parent.getItemAtPosition(position);
+                    String EXTRA_TITLE = (String) parent.getItemAtPosition(position);
+                    String EXTRA_IMG = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Buenos_Aires_-_Subte_-_Facultad_de_Medicina_4.jpg";
 
-                    Log.d(TAG, "click en: " + estacion);
+                    //final ImageView imageView = (ImageView) view.findViewById(R.id.image_estacion);
+                    // navigate activity
+                    DetalleEstacionActivity.navigate(DetalleLineaActivity.this, imageViewEstacion, EXTRA_TITLE, EXTRA_IMG);
                 }
             });
 

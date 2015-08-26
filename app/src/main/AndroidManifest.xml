@@ -49,7 +49,7 @@
             android:value="73eb2c1373ea4e2a2e9c1037e73cb28e0e3014ad" />
 
         <activity
-            android:name=".DetalleEstacion"
+            android:name=".DetalleEstacionActivity"
             android:label="@string/title_activity_detalle_estacion"
             android:parentActivityName=".DetalleLineaActivity" >
             <meta-data

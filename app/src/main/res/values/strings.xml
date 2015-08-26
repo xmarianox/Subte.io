@@ -152,7 +152,18 @@
 
     <!-- Cabezera linea P -->
 
+    <!--
+        Detalle Estación
+    -->
+    <string name="bus_lines_title">Colectivos Cercanos</string>
+    <string name="other_lines_title">Otras líneas en esta estación</string>
+    <string name="services_title">Servicios de la Estación</string>
 
+    <string name="service_escalera">Escalera mecánica</string>
+    <string name="service_ascensor">Ascensor</string>
+    <string name="service_consulta">Terminal de consulta</string>
+    <string name="service_wifi">Wifi</string>
+    <string name="service_toilets">Baños</string>
 
     <!-- Textos a cambiar -->
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
