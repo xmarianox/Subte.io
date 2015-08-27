@@ -68,12 +68,12 @@ public class LoadSubwayData {
         subwayStatusApi.loadSubwayStatus(new Callback<List<SubwayLine>>() {
             @Override
             public void success(List<SubwayLine> subwayLine, Response response) {
-                //Log.d(TAG, "Response: " + subwayLine.size());
                 // Guardamos la data en cache.
                 realm.beginTransaction();
                 List<SubwayLine> realmSubwayStatus = realm.copyToRealmOrUpdate(subwayLine);
                 realm.commitTransaction();
                 // Eliminamos la linea que no se utiliza.
+                removeUnunsedLine("P");
                 removeUnunsedLine("U");
                 realm.addChangeListener(realmChangeListener);
             }

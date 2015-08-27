@@ -42,7 +42,7 @@ public class StationItemAdapter extends RecyclerView.Adapter<StationItemAdapter.
             itemView.setOnClickListener(this);
 
             // set views
-            cardView = (CardView) itemView.findViewById(R.id.station_item);
+            //cardView = (CardView) itemView.findViewById(R.id.station_item);
             stationName = (TextView) itemView.findViewById(R.id.station_name);
         }
 
