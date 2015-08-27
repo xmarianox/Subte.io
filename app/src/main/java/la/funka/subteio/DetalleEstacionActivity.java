@@ -1,13 +1,11 @@
 package la.funka.subteio;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,15 +39,6 @@ public class DetalleEstacionActivity extends AppCompatActivity {
 
     private static CollapsingToolbarLayout collapsingToolbarLayout;
     private Realm realm;
-
-    public static void navigate(AppCompatActivity activity, View transitionImage, String stationName, String stationImage) {
-        Intent intent = new Intent(activity, DetalleEstacionActivity.class);
-        intent.putExtra("EXTRA_TITLE", stationName);
-        intent.putExtra("EXTRA_IMAGE", stationImage);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionImage, EXTRA_IMAGE);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

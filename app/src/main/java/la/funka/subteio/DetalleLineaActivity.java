@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,8 +61,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
         }
     };
 
-    private ImageView imageViewEstacion;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +81,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         // Create a new empty instance
         realm = Realm.getInstance(realmConfiguration);
-
-        imageViewEstacion = (ImageView) findViewById(R.id.image_estacion);
     }
 
     @Override
@@ -123,9 +118,10 @@ public class DetalleLineaActivity extends AppCompatActivity {
                     String EXTRA_TITLE = (String) parent.getItemAtPosition(position);
                     String EXTRA_IMG = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Buenos_Aires_-_Subte_-_Facultad_de_Medicina_4.jpg";
 
-                    //final ImageView imageView = (ImageView) view.findViewById(R.id.image_estacion);
-                    // navigate activity
-                    DetalleEstacionActivity.navigate(DetalleLineaActivity.this, imageViewEstacion, EXTRA_TITLE, EXTRA_IMG);
+                    Intent intentDetalle = new Intent(DetalleLineaActivity.this, DetalleEstacionActivity.class);
+                    intentDetalle.putExtra("EXTRA_TITLE", EXTRA_TITLE);
+                    intentDetalle.putExtra("EXTRA_IMAGE", EXTRA_IMG);
+                    startActivity(intentDetalle);
                 }
             });
 
