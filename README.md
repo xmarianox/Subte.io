@@ -2,21 +2,20 @@
 
 ![Subte.io App Icon](/app/src/main/res/drawable-xxxhdpi/ic_launcher.png)
 
-Aplicación para informase sobre el estado del Subte en Buenos Aires. 
-
+Aplicación para informase sobre el estado del Subte en Buenos Aires.
 La información sobre las estaciones y las lineas es tomada desde los dataset de [Buenos Aires Data](http://data.buenosaires.gob.ar/dataset/subterraneos).
-
 El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 
 
 ## Roadmap de para la primera BETA.
 
-- [] Cambiar el color de CardView para alertar al usuario cuando un servicio esta demorado.
-- [] Revisar la tabla de horarios, porque no esta entrando todo el contenido en las pantallas más pequeñas.
-- [] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
-- [] Solucionar los errores en el Fragment del mapa.
-- [] Imprimir las estaciones en el mapa.
-- [] Agregar Vista Acerca de esta aplicación.
+- [x] Cambiar el color de CardView para alertar al usuario cuando un servicio esta demorado.
+- [ ] Revisar la tabla de horarios, porque no esta entrando todo el contenido en las pantallas más pequeñas.
+- [ ] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
+- [ ] Solucionar los errores en el Fragment del mapa.
+- [ ] Imprimir las estaciones en el mapa.
+- [ ] Agregar Vista Acerca de esta aplicación.
+
 
 ## Desarrollada por:
 
