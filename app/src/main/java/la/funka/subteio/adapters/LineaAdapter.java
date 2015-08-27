@@ -1,6 +1,7 @@
 package la.funka.subteio.adapters;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,19 +69,39 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final SubwayLine linea = lineas.get(position);
+
         // Set atributo linea.
         holder.image_line.setContentDescription(linea.getLineName());
+
+        String status = linea.getLineStatus();
+
+        // set CardView color
+        setCardColor(status, holder);
+
         // Set status linea.
-        holder.status.setText("Estado de la Línea: " + linea.getLineStatus());
-        // Set frecuencia.
-        double frequency = utils.calculateFrequency(linea.getLineFrequency());
-        if (frequency != 0.0){
-            holder.frequency.setText("Frecuencia de trenes: " + String.valueOf(Math.round(frequency))+ " min");
-        }else{
-            holder.frequency.setText("Sin Estimación");
-        }
-        // Set
-        switch (linea.getLineName()){
+        holder.status.setText("Estado de la Línea: " + status);
+
+        // set Frequency
+        setFrequency(linea.getLineFrequency(), holder);
+
+        // SetImage
+        setImageLine(linea.getLineName(), holder);
+
+        // Set Tag
+        holder.itemView.setTag(linea);
+    }
+
+    @Override
+    public int getItemCount() {
+        return lineas.size();
+    }
+
+    /**
+     *  Set Image to lines
+     * */
+    private void setImageLine(String lineName, ViewHolder holder) {
+
+        switch (lineName){
             case "A":
                 holder.image_line.setImageResource(R.drawable.ic_item_linea_a);
                 break;
@@ -100,26 +121,39 @@ public class LineaAdapter extends RecyclerView.Adapter<LineaAdapter.ViewHolder> 
             case "E":
                 holder.image_line.setImageResource(R.drawable.ic_item_linea_e);
                 break;
-            
+
             case "H":
                 holder.image_line.setImageResource(R.drawable.ic_item_linea_h);
                 break;
-            
+
             case "P":
                 holder.image_line.setImageResource(R.drawable.ic_item_linea_p);
                 break;
-
-            //case "U":
-            //    holder.image_line.setImageResource(R.drawable.ic_item_linea_a);
-            //    break;
         }
-        holder.itemView.setTag(linea);
+
     }
 
-    @Override
-    public int getItemCount() {
-        return lineas.size();
+    /**
+     *  Set CardView backgroundColor
+     * */
+    private void setCardColor(String status, ViewHolder holder) {
+        if (!"Normal".equals(status)) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#FFECB3"));
+        }
     }
-    
+
+    /**
+     *  Set Frequency
+     * */
+    private void setFrequency(String frequencyText, ViewHolder holder) {
+        // Set frecuencia.
+        double frequency = utils.calculateFrequency(frequencyText);
+
+        if (frequency != 0.0){
+            holder.frequency.setText("Frecuencia de trenes: " + String.valueOf(Math.round(frequency))+ " min");
+        }else{
+            holder.frequency.setText("Sin Estimación");
+        }
+    }
   
 }
