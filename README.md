@@ -3,7 +3,7 @@
 ![Subte.io App Icon](/app/src/main/res/drawable-xxxhdpi/ic_launcher.png)
 
 Aplicación para informase sobre el estado del Subte en Buenos Aires.
-La información sobre las estaciones y las lineas es tomada desde los dataset de [Buenos Aires Data](http://data.buenosaires.gob.ar/dataset/subterraneos).
+La información sobre las estaciones y las lineas es tomada desde los dataset de [Buenos Aires Data](http://data.buenosaires.gob.ar/dataset#groups_cats=.movilidad-transporte.).
 El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 
 
