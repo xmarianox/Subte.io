@@ -73,8 +73,8 @@
                     android:layout_gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:contentDescription="@string/bus_lines_title"
                         android:src="@drawable/ic_bus"/>
 
@@ -109,8 +109,8 @@
                     android:layout_gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:contentDescription="@string/other_lines_title"
                         android:src="@drawable/ic_subway_black"/>
 
@@ -142,8 +142,8 @@
                     android:layout_gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:contentDescription="@string/services_title"
                         android:src="@drawable/ic_beenhere_black_24dp"/>
 
