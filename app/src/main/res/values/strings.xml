@@ -151,11 +151,8 @@
     <string name="cabecera_end_linea_h_primer_tren_dom">08.00</string>
     <string name="cabecera_end_linea_h_ultimo_tren_dom">22.30</string>
 
-    <!-- Cabezera linea P -->
 
-    <!--
-        Detalle Estación
-    -->
+    <!-- Detalle Estación -->
     <string name="bus_lines_title">Colectivos Cercanos</string>
     <string name="other_lines_title">Otras líneas en esta estación</string>
     <string name="services_title">Servicios de la Estación</string>
@@ -166,9 +163,7 @@
     <string name="service_wifi">Wifi</string>
     <string name="service_toilets">Baños</string>
 
-    <!--
-        Acerca De..
-    -->
+    <!-- Acerca De.. -->
     <string name="title_desarrollado">Desarrollada por:</string>
 
     <!-- Dev list -->

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Log;
@@ -48,11 +47,8 @@ import la.funka.subteio.model.SubwayStation;
 public class DetalleLineaActivity extends AppCompatActivity {
 
     private static final String TAG = "DetalleLineaActivity";
-
-    private static CollapsingToolbarLayout collapsingToolbarLayout;
     private StableArrayAdapter adapter;
     ArrayList<String> dataset;
-
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
@@ -69,7 +65,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         initToolbar();
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
         // configure realm
@@ -91,7 +87,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
             final Intent intent = getIntent();
 
-            String EXTRA_NOMBRE_LINEA = intent.getStringExtra("NOMBRE_LINEA");
+            final String EXTRA_NOMBRE_LINEA = intent.getStringExtra("NOMBRE_LINEA");
             String lineaText = "Estaciones Línea " + EXTRA_NOMBRE_LINEA;
 
             TextView textView = (TextView) findViewById(R.id.detalle_linea_name);
@@ -116,7 +112,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // selectedItem
                     String EXTRA_TITLE = (String) parent.getItemAtPosition(position);
-                    String EXTRA_IMG = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Buenos_Aires_-_Subte_-_Facultad_de_Medicina_4.jpg";
+                    //String EXTRA_IMG = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Buenos_Aires_-_Subte_-_Facultad_de_Medicina_4.jpg";
+                    String EXTRA_IMG = getLineImage(EXTRA_NOMBRE_LINEA);
 
                     Intent intentDetalle = new Intent(DetalleLineaActivity.this, DetalleEstacionActivity.class);
                     intentDetalle.putExtra("EXTRA_TITLE", EXTRA_TITLE);
@@ -157,14 +154,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
             getWindow().setEnterTransition(transition);
             getWindow().setReenterTransition(transition);
         }
-    }
-
-    private void applyPalette(Palette palette) {
-        int primaryDark = getResources().getColor(R.color.primary_dark);
-        int primary = getResources().getColor(R.color.primary);
-        collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
-        collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
-        supportPostponeEnterTransition();
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -408,5 +397,39 @@ public class DetalleLineaActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    /**
+    *   Return de Line Image
+    * */
+    private String getLineImage(String line) {
+        String lineImage = null;
+
+        switch (line) {
+            case "A":
+                lineImage = "http://www.iprofesional.com/adjuntos/jpg/2013/02/373569.jpg";
+                break;
+
+            case "B":
+                lineImage = "http://pxb.cdn.letrap.com.ar/042015/1428641744976.jpg";
+                break;
+
+            case "C":
+                lineImage = "http://www.revistaque.com/wp-content/uploads/2014/10/SUBTE-FONDO.jpg";
+                break;
+
+            case "D":
+                lineImage = "http://www.larazon.com.ar/ciudad/Linea-demoras-obras_IECIMA20141110_0065_7.jpg";
+                break;
+
+            case "E":
+                lineImage = "http://nueva-ciudad.com.ar/wp-content/uploads/2015/01/linea-e.jpg";
+                break;
+
+            case "H":
+                lineImage = "http://www.larazon.com.ar/Vista-estacion-terminada-conectara-linea_IECIMA20100608_0006_7.jpg";
+                break;
+        }
+        return lineImage;
     }
 }

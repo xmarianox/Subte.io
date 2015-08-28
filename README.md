@@ -11,7 +11,7 @@ El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 
 - [x] Cambiar el color de CardView para alertar al usuario cuando un servicio esta demorado.
 - [ ] Revisar la tabla de horarios, porque no esta entrando todo el contenido en las pantallas más pequeñas.
-- [ ] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
+- [x] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
 - [ ] Solucionar los errores en el Fragment del mapa.
 - [ ] Imprimir las estaciones en el mapa.
 - [x] Agregar Vista Acerca de esta aplicación.
