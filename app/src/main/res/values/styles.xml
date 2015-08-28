@@ -71,4 +71,53 @@
         <item name="android:textColor">@color/secondary_text</item>
     </style>
 
+
+    <!--
+    - View: Acerca de...
+    -->
+    <!-- Title -->
+    <style name="AcercaDe.Title" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <!-- Sub Title -->
+    <style name="AcercaDe.SubTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <!-- ImageView -->
+    <style name="AcercaDe.Image.Logo" parent="">
+        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_height">125dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">25dp</item>
+        <item name="android:layout_marginBottom">25dp</item>
+    </style>
+    <!-- Sub Title -->
+    <style name="AcercaDe.SubTitleDev" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <!-- Sub Title -->
+    <style name="AcercaDe.DevList" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="AcercaDe.DevListLink" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/linea_a</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

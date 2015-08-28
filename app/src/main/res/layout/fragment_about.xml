@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="la.funka.subteio.fragments.AboutFragment">
+
+    <TextView
+        style="@style/AcercaDe.Title"
+        android:text="@string/app_name" />
+
+    <TextView
+        style="@style/AcercaDe.SubTitle"
+        android:id="@+id/app_version_text" />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        style="@style/AcercaDe.Image.Logo"
+        android:contentDescription="@string/app_name" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_group_black_24dp"
+            android:tint="@color/secondary_text"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            style="@style/AcercaDe.SubTitleDev"
+            android:text="@string/title_desarrollado"/>
+
+    </LinearLayout>
+
+    <!-- Dev list -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_list_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_list_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/AcercaDe.DevList"
+            android:layout_weight=".5"
+            android:text="@string/dev_1_name"/>
+
+        <TextView
+            android:id="@+id/twitter_dev_1"
+            style="@style/AcercaDe.DevListLink"
+            android:layout_weight=".5"
+            android:text="@string/dev_1_twitter"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_list_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_list_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/AcercaDe.DevList"
+            android:layout_weight=".5"
+            android:text="@string/dev_2_name"/>
+
+        <TextView
+            android:id="@+id/twitter_dev_2"
+            style="@style/AcercaDe.DevListLink"
+            android:layout_weight=".5"
+            android:text="@string/dev_2_twitter"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_list_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_list_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/AcercaDe.DevList"
+            android:layout_weight=".5"
+            android:text="@string/dev_3_name"/>
+
+        <TextView
+            android:id="@+id/twitter_dev_3"
+            style="@style/AcercaDe.DevListLink"
+            android:layout_weight=".5"
+            android:text="@string/dev_3_twitter"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

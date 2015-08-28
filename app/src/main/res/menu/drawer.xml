@@ -15,5 +15,10 @@
             android:icon="@drawable/ic_map"
             android:title="@string/title_section_mapa"/>
 
+        <item
+            android:id="@+id/about_view_fragment"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/title_section_acerca"/>
+
     </group>
 </menu>

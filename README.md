@@ -14,7 +14,7 @@ El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 - [ ] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
 - [ ] Solucionar los errores en el Fragment del mapa.
 - [ ] Imprimir las estaciones en el mapa.
-- [ ] Agregar Vista Acerca de esta aplicación.
+- [x] Agregar Vista Acerca de esta aplicación.
 
 
 ## Desarrollada por:

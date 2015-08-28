@@ -14,6 +14,7 @@ import android.view.View;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import la.funka.subteio.fragments.AboutFragment;
 import la.funka.subteio.fragments.EstadoSubteFragment;
 import la.funka.subteio.fragments.MapaSubteFragment;
 
@@ -74,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.map_view_fragment:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapaSubteFragment()).commit();
+                        return true;
+
+                    case R.id.about_view_fragment:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new AboutFragment()).commit();
                         return true;
 
                     default:

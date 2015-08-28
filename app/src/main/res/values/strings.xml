@@ -9,6 +9,7 @@
     <!-- Drawer menu -->
     <string name="title_section_estado">Estado</string>
     <string name="title_section_mapa">Mapa</string>
+    <string name="title_section_acerca">Acerca de esta aplicación</string>
 
     <!-- Status View -->
     <string name="title_detail_view">Horarios de servicio</string>
@@ -164,6 +165,21 @@
     <string name="service_consulta">Terminal de consulta</string>
     <string name="service_wifi">Wifi</string>
     <string name="service_toilets">Baños</string>
+
+    <!--
+        Acerca De..
+    -->
+    <string name="title_desarrollado">Desarrollada por:</string>
+
+    <!-- Dev list -->
+    <string name="dev_1_name">Mariano</string>
+    <string name="dev_1_twitter">"@xsincrueldadx"</string>
+
+    <string name="dev_2_name">Emilio</string>
+    <string name="dev_2_twitter">"@emiliovirtual"</string>
+
+    <string name="dev_3_name">Ezequiel</string>
+    <string name="dev_3_twitter">"@itswhoyall"</string>
 
     <!-- Textos a cambiar -->
     <string name="title_activity_detalle_linea">DetalleLineaActivity</string>

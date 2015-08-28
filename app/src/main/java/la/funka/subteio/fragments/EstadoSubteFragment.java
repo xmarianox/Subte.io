@@ -47,6 +47,7 @@ public class EstadoSubteFragment extends Fragment {
     };
 
     public EstadoSubteFragment() {
+        // Required empty public constructor
     }
 
     @Override
