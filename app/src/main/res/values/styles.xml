@@ -28,6 +28,13 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TitleDetailToolbar" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@color/card_background</item>
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_list_margin</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="ItemDetail" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
@@ -62,13 +69,13 @@
     <style name="ItemTableTitle" parent="TextAppearance.AppCompat.Small">
         <item name="android:padding">2dp</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">@color/card_background</item>
     </style>
 
     <style name="ItemTable" parent="TextAppearance.AppCompat.Small">
         <item name="android:padding">1dp</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">@color/card_background</item>
     </style>
 
 

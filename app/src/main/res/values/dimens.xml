@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_horizontal_list_margin">8dp</dimen>
     <dimen name="activity_vertical_list_margin">8dp</dimen>
+
+    <dimen name="toolbar_title_horizontal_margin">72dp</dimen>
 </resources>

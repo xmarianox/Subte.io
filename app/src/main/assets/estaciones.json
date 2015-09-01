@@ -912,7 +912,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "7, 8, 22, 24, 28, 29, 50, 56, 64, 86, 91, 105, 111, 126, 146"
   },
   {
 	"id_station":45,
@@ -927,7 +927,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "2, 8, 22, 24, 28, 29, 86, 103, 126"
   },
   {
 	"id_station":46,
@@ -942,7 +942,7 @@
 	"toilets": true,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "9, 10, 17, 39, 45, 59, 60, 70, 91, 96, 98, 100"
   },
   {
 	"id_station":47,
@@ -957,7 +957,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "39, 53, 60, 96, 102, 126, 129, 168"
   },
   {
 	"id_station":48,
@@ -972,7 +972,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "6, 12, 37, 50, 53, 84, 96, 126, 129, 150, 151, 168"
   },
   {
 	"id_station":49,
@@ -987,7 +987,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "53, 95, 126, 129, 188"
   },
   {
 	"id_station":50,
@@ -1002,7 +1002,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "57, 61, 62, 118, 126, 129, 188"
   },
   {
 	"id_station":51,
@@ -1017,7 +1017,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "32, 41, 53, 97, 101, 126"
   },
   {
 	"id_station":61,
@@ -1032,7 +1032,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "7, 53, 97, 126"
   },
   {
 	"id_station":60,
@@ -1047,7 +1047,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "7, 15, 53, 56, 65, 85, 86, 97, 112, 126"
   },
   {
 	"id_station":52,
@@ -1062,7 +1062,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "25, 42, 56, 97, 135, 180"
   },
   {
 	"id_station":53,
@@ -1077,7 +1077,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": ""
+	"bus_lines": "26, 56, 97, 103, 134"
   },
   {
 	"id_station":59,
@@ -1092,7 +1092,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "4, 56, 97, 103"
   },
   {
 	"id_station":68,
@@ -1107,7 +1107,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "4, 7, 50, 56, 97, 103, 132"
   },
   {
 	"id_station":67,
@@ -1122,7 +1122,7 @@
 	"toilets": false,
 	"consultation": false,
 	"wifi": false,
-	"bus_lines": "-"
+	"bus_lines": "4, 7, 50, 56, 76, 97, 101, 103, 141, 180"
   },
   {
 	"id_station":77,

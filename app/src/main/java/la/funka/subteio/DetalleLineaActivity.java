@@ -47,8 +47,9 @@ import la.funka.subteio.model.SubwayStation;
 public class DetalleLineaActivity extends AppCompatActivity {
 
     private static final String TAG = "DetalleLineaActivity";
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private StableArrayAdapter adapter;
-    ArrayList<String> dataset;
+    private ArrayList<String> dataset;
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
@@ -65,7 +66,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         initToolbar();
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
         // configure realm
@@ -89,6 +90,9 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
             final String EXTRA_NOMBRE_LINEA = intent.getStringExtra("NOMBRE_LINEA");
             String lineaText = "Estaciones Línea " + EXTRA_NOMBRE_LINEA;
+            String lineaTitleText = "Línea " + EXTRA_NOMBRE_LINEA;
+
+            collapsingToolbarLayout.setTitle(lineaTitleText);
 
             TextView textView = (TextView) findViewById(R.id.detalle_linea_name);
             textView.setText(lineaText);
