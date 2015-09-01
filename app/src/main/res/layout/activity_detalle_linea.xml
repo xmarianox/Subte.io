@@ -37,14 +37,13 @@
                     android:paddingLeft="@dimen/toolbar_title_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_list_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_horizontal_list_margin"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/TitleDetailToolbar"
-                        android:layout_marginBottom="8dp"
                         android:text="@string/title_detail_view"/>
 
                 </LinearLayout>
@@ -54,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/activity_horizontal_list_margin">
+                    android:padding="@dimen/activity_vertical_margin">
 
                     <GridLayout
                         android:layout_width="match_parent"
@@ -62,28 +61,36 @@
                         android:useDefaultMargins="true"
                         android:alignmentMode="alignBounds"
                         android:columnOrderPreserved="false"
-                        android:columnCount="4">
+                        android:columnCount="3">
 
                         <!-- Row 1 -->
                         <TextView
+                            android:layout_width="@dimen/col_width"
                             android:text="@string/title_cabeceras"
                             style="@style/ItemTableTitle"
-                            android:layout_columnSpan="2"
-                            android:layout_gravity="center_horizontal"/>
+                            android:layout_gravity="left"/>
 
-                        <TextView android:text="@string/title_dias_habiles"
+                        <TextView
+                            android:layout_width="@dimen/col_width"
+                            android:text="@string/title_dias_habiles"
+                            android:layout_gravity="left"
                             style="@style/ItemTableTitle"/>
 
-                        <TextView android:text="@string/title_dias_no_habiles"
+                        <TextView
+                            android:layout_width="@dimen/col_width"
+                            android:text="@string/title_dias_no_habiles"
+                            android:layout_gravity="left"
                             style="@style/ItemTableTitle" />
 
                         <!-- Row 2 -->
-                        <TextView android:layout_columnSpan="2"
-                            android:layout_gravity="center_horizontal"/>
+                        <TextView
+                            android:layout_width="@dimen/col_width"
+                            android:layout_gravity="left"/>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="left"
                             android:columnCount="2">
 
                             <TextView android:text="@string/primero"
@@ -97,8 +104,9 @@
                         </GridLayout>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="left"
                             android:columnCount="2">
 
                             <TextView android:text="@string/primero"
@@ -113,14 +121,14 @@
 
                         <!-- Row DESDE - HORARIO-->
                         <TextView
-                            android:layout_columnSpan="2"
+                            android:layout_width="@dimen/col_width"
                             android:paddingTop="8dp"
                             android:id="@+id/desde_cabecera"
                             style="@style/ItemTable"
-                            android:layout_gravity="center_horizontal"/>
+                            android:layout_gravity="left"/>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
                             android:useDefaultMargins="true"
                             android:alignmentMode="alignBounds"
@@ -129,18 +137,18 @@
 
                             <TextView
                                 android:id="@+id/desde_cabecera_primer_habil"
-                                android:layout_gravity="center_horizontal"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable"/>
 
                             <TextView
                                 android:id="@+id/desde_cabecera_ultimo_habil"
-                                android:layout_gravity="center_horizontal"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable" />
 
                         </GridLayout>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
                             android:useDefaultMargins="true"
                             android:alignmentMode="alignBounds"
@@ -149,26 +157,26 @@
 
                             <TextView
                                 android:id="@+id/desde_cabecera_primer_dom"
-                                android:layout_gravity="center_horizontal"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable"/>
 
                             <TextView
                                 android:id="@+id/desde_cabecera_ultimo_dom"
-                                android:layout_gravity="center_horizontal"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable" />
 
                         </GridLayout>
 
                         <!-- Row HASTA - HORARIO-->
                         <TextView
-                            android:layout_columnSpan="2"
+                            android:layout_width="@dimen/col_width"
                             android:paddingTop="8dp"
                             android:id="@+id/hasta_cabecera"
                             style="@style/ItemTable"
-                            android:layout_gravity="center_horizontal"/>
+                            android:layout_gravity="left"/>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
                             android:useDefaultMargins="true"
                             android:alignmentMode="alignBounds"
@@ -177,16 +185,18 @@
 
                             <TextView
                                 android:id="@+id/hasta_cabecera_primero_habil"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable"/>
 
                             <TextView
                                 android:id="@+id/hasta_cabecera_ultimo_habil"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable" />
 
                         </GridLayout>
 
                         <GridLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/col_width"
                             android:layout_height="wrap_content"
                             android:useDefaultMargins="true"
                             android:alignmentMode="alignBounds"
@@ -195,10 +205,12 @@
 
                             <TextView
                                 android:id="@+id/hasta_cabecera_primero_dom"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable"/>
 
                             <TextView
                                 android:id="@+id/hasta_cabecera_ultimo_dom"
+                                android:layout_gravity="right"
                                 style="@style/ItemTable" />
 
                         </GridLayout>

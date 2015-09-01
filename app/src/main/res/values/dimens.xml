@@ -6,4 +6,6 @@
     <dimen name="activity_vertical_list_margin">8dp</dimen>
 
     <dimen name="toolbar_title_horizontal_margin">72dp</dimen>
+
+    <dimen name="col_width">109dp</dimen>
 </resources>

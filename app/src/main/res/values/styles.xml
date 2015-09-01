@@ -74,7 +74,7 @@
 
     <style name="ItemTable" parent="TextAppearance.AppCompat.Small">
         <item name="android:padding">1dp</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/card_background</item>
     </style>
 
