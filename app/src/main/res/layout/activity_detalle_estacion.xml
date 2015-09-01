@@ -155,41 +155,11 @@
 
                 </LinearLayout>
 
-                <!-- Acá van los servicios -->
-                <TextView
+                <!-- Listado de servicios de las estaciones -->
+                <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/service_escalera"
-                    style="@style/ItemDetail"
-                    android:text="@string/service_escalera" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/service_ascensor"
-                    style="@style/ItemDetail"
-                    android:text="@string/service_ascensor" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/service_consulta"
-                    style="@style/ItemDetail"
-                    android:text="@string/service_consulta" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/service_toilets"
-                    style="@style/ItemDetail"
-                    android:text="@string/service_toilets" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/service_wifi"
-                    style="@style/ItemDetail"
-                    android:text="@string/service_wifi" />
+                    android:id="@+id/service_list"/>
 
             </LinearLayout>
 

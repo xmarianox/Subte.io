@@ -1,10 +1,10 @@
 package la.funka.subteio;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -38,6 +36,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import la.funka.subteio.adapters.StableArrayAdapter;
 import la.funka.subteio.model.SubwayStation;
 
 /**
@@ -67,7 +66,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
         initToolbar();
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
         // configure realm
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
@@ -116,7 +115,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // selectedItem
                     String EXTRA_TITLE = (String) parent.getItemAtPosition(position);
-                    //String EXTRA_IMG = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Buenos_Aires_-_Subte_-_Facultad_de_Medicina_4.jpg";
                     String EXTRA_IMG = getLineImage(EXTRA_NOMBRE_LINEA);
 
                     Intent intentDetalle = new Intent(DetalleLineaActivity.this, DetalleEstacionActivity.class);
@@ -178,31 +176,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
-    }
-
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
     }
 
     private void loadStations() {

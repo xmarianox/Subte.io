@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +16,21 @@ import android.transition.Slide;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import la.funka.subteio.adapters.StableArrayAdapter;
 import la.funka.subteio.model.SubwayStation;
 
 /**
@@ -35,10 +42,13 @@ public class DetalleEstacionActivity extends AppCompatActivity {
     private static final String TAG = "DetalleEstacionActivity";
 
     private static final String EXTRA_IMAGE = "la.funka.subteio.extraImage";
-    private static final String EXTRA_TITLE = "la.funka.subteio.extraTitle";
+    private static String EXTRA_TITLE = "la.funka.subteio.extraTitle";
 
     private static CollapsingToolbarLayout collapsingToolbarLayout;
     private Realm realm;
+    private ArrayList<String> list;
+    private StableArrayAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +61,10 @@ public class DetalleEstacionActivity extends AppCompatActivity {
 
         initToolbar();
 
-        String title_estacion = getIntent().getStringExtra("EXTRA_TITLE");
+        EXTRA_TITLE = getIntent().getStringExtra("EXTRA_TITLE");
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_detail);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-
-        collapsingToolbarLayout.setTitle(title_estacion);
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
 
         // configure realm
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
@@ -65,36 +73,55 @@ public class DetalleEstacionActivity extends AppCompatActivity {
 
         // Create a new empty instance
         realm = Realm.getInstance(realmConfiguration);
+    }
 
-        // Load Image
-        final ImageView imageView = (ImageView) findViewById(R.id.image_estacion);
-        Picasso.with(this).load(getIntent().getStringExtra("EXTRA_IMAGE")).fit().centerCrop().into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                    @Override
-                    public void onGenerated(Palette palette) {
-                        applyPalette(palette);
-                    }
-                });
-            }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-            @Override
-            public void onError() {
-                Log.d(TAG, "Error al cargar la imagen");
-            }
-        });
+        if (adapter == null) {
 
-        RealmResults<SubwayStation> results = realm.where(SubwayStation.class)
-                .equalTo("station_name", title_estacion)
-                .findAll();
+            collapsingToolbarLayout.setTitle(EXTRA_TITLE);
 
-        // Linas de buses en la estación
-        setBusLines(results);
+            // Load Image
+            final ImageView imageView = (ImageView) findViewById(R.id.image_estacion);
+            Picasso.with(this).load(getIntent().getStringExtra("EXTRA_IMAGE")).fit().centerCrop().into(imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            applyPalette(palette);
+                        }
+                    });
+                }
 
-        // Servicios dentro de la estación
-        setStationServices(results);
+                @Override
+                public void onError() {
+                    Log.d(TAG, "Error al cargar la imagen");
+                }
+            });
+
+            RealmResults<SubwayStation> results = realm.where(SubwayStation.class)
+                    .equalTo("station_name", EXTRA_TITLE)
+                    .findAll();
+
+            // Linas de buses en la estación
+            setBusLines(results);
+
+            // Servicios dentro de la estación
+            list = new ArrayList<>();
+            setStationServices(results);
+
+            ListView listView = (ListView) findViewById(R.id.service_list);
+            adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+            listView.setAdapter(adapter);
+
+            setListViewHeightBasedOnChildren(listView);
+
+            adapter.notifyDataSetChanged();
+        }
     }
 
     // Muestra las lineas de bus que pasan por la estacion
@@ -103,7 +130,7 @@ public class DetalleEstacionActivity extends AppCompatActivity {
         String bus_lines_text = item.get(0).getBus_lines();
         TextView bus_lines = (TextView) findViewById(R.id.bus_line_text);
 
-        if (bus_lines_text == "") {
+        if ("".equals(bus_lines_text)) {
             bus_lines.setVisibility(View.INVISIBLE);
         }
         // set bus lines
@@ -120,39 +147,30 @@ public class DetalleEstacionActivity extends AppCompatActivity {
         boolean consultas = item.get(0).isConsultation();
         boolean toilets   = item.get(0).isToilets();
 
-        // get views
-        TextView textViewEscalera = (TextView) findViewById(R.id.service_escalera);
-        TextView textViewWifi     = (TextView) findViewById(R.id.service_wifi);
-        TextView textViewAscensor = (TextView) findViewById(R.id.service_ascensor);
-        TextView textViewConsulta = (TextView) findViewById(R.id.service_consulta);
-        TextView textViewToilets  = (TextView) findViewById(R.id.service_toilets);
-
-        // set views invisible
-        textViewEscalera.setVisibility(View.INVISIBLE);
-        textViewWifi.setVisibility(View.INVISIBLE);
-        textViewAscensor.setVisibility(View.INVISIBLE);
-        textViewConsulta.setVisibility(View.INVISIBLE);
-        textViewToilets.setVisibility(View.INVISIBLE);
-
-        // set view visible
+        // add items
         if (escaleras) {
-            textViewEscalera.setVisibility(View.VISIBLE);
+            //textViewEscalera.setVisibility(View.VISIBLE);
+            list.add(getString(R.string.service_escalera));
         }
 
         if(wifi) {
-            textViewWifi.setVisibility(View.VISIBLE);
+            //textViewWifi.setVisibility(View.VISIBLE);
+            list.add(getString(R.string.service_wifi));
         }
 
         if(ascensor) {
-            textViewAscensor.setVisibility(View.VISIBLE);
+            //textViewAscensor.setVisibility(View.VISIBLE);
+            list.add(getString(R.string.service_ascensor));
         }
 
         if(consultas) {
-            textViewConsulta.setVisibility(View.VISIBLE);
+            //textViewConsulta.setVisibility(View.VISIBLE);
+            list.add(getString(R.string.service_consulta));
         }
 
         if(toilets) {
-            textViewToilets.setVisibility(View.VISIBLE);
+            //textViewToilets.setVisibility(View.VISIBLE);
+            list.add(getString(R.string.service_toilets));
         }
     }
 
@@ -183,11 +201,31 @@ public class DetalleEstacionActivity extends AppCompatActivity {
     }
 
     private void applyPalette(Palette palette) {
-        int primaryDark = getResources().getColor(R.color.primary_dark);
-        int primary = getResources().getColor(R.color.primary);
+        int primaryDark = ContextCompat.getColor(getApplicationContext(), R.color.primary_dark);
+        int primary = ContextCompat.getColor(getApplicationContext(), R.color.primary);
         collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
         collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
         supportPostponeEnterTransition();
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     @Override
