@@ -88,7 +88,8 @@ public class EstadoSubteFragment extends Fragment {
 
             // RefreshLayout
             swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefreshLayout);
-            swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+            swipeRefreshLayout.setColorSchemeResources(
+                    android.R.color.holo_blue_bright,
                     android.R.color.holo_green_light,
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light);
