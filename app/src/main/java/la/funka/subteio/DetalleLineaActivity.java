@@ -17,27 +17,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmMigrationNeededException;
 import la.funka.subteio.adapters.StableArrayAdapter;
 import la.funka.subteio.model.SubwayStation;
+import la.funka.subteio.service.LoadSubwayData;
+import la.funka.subteio.utils.Util;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -49,6 +39,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private StableArrayAdapter adapter;
     private ArrayList<String> dataset;
+    private Util utils;
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
@@ -73,10 +64,20 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 .name("stations.realm")
                 .build();
         // Clear the real from last time
-        Realm.deleteRealm(realmConfiguration);
-
+        //Realm.deleteRealm(realmConfiguration);
         // Create a new empty instance
-        realm = Realm.getInstance(realmConfiguration);
+        //realm = Realm.getInstance(realmConfiguration);
+        try {
+            // Create a new empty instance
+            realm = Realm.getInstance(realmConfiguration);
+        } catch (RealmMigrationNeededException ex) {
+            Log.d(TAG, "Error:" + ex.getLocalizedMessage());
+            // Clear the real from last time
+            Realm.deleteRealm(realmConfiguration);
+            // create a new instance
+            Realm.migrateRealm(realmConfiguration);
+        }
+
     }
 
     @Override
@@ -84,6 +85,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
         super.onResume();
 
         if (adapter == null) {
+
+            utils = new Util(this);
 
             final Intent intent = getIntent();
 
@@ -96,8 +99,12 @@ public class DetalleLineaActivity extends AppCompatActivity {
             TextView textView = (TextView) findViewById(R.id.detalle_linea_name);
             textView.setText(lineaText);
 
+            if (utils.isNetworkConnected()) {
+                new LoadSubwayData(realm).getStationsDataFromApi();
+                realm.addChangeListener(realmChangeListener);
+            }
             // LoadData
-            loadStations();
+            //loadStations();
 
             // get linea data
             getStationInformation(EXTRA_NOMBRE_LINEA);
@@ -176,38 +183,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
-    }
-
-    private void loadStations() {
-
-        InputStream stream = null;
-
-        try {
-            stream = this.getAssets().open("estaciones.json");
-        } catch (IOException e) {
-            Log.d(TAG, "loadStations(): " + e.getLocalizedMessage());
-        }
-
-        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
-            @Override
-            public boolean shouldSkipField(FieldAttributes f) {
-                return f.getDeclaringClass().equals(RealmObject.class);
-            }
-
-            @Override
-            public boolean shouldSkipClass(Class<?> clazz) {
-                return false;
-            }
-        }).create();
-
-        assert stream != null;
-        JsonElement json = new JsonParser().parse(new InputStreamReader(stream));
-        List<SubwayStation> stations = gson.fromJson(json, new TypeToken<List<SubwayStation>>() {}.getType());
-
-        // Open a transaction to store items into the realm
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(stations);
-        realm.commitTransaction();
     }
 
     private void getStationsDataset(String lineaName) {

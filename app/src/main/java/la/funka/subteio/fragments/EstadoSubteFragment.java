@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmMigrationNeededException;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
 import la.funka.subteio.model.SubwayLine;
@@ -60,9 +62,19 @@ public class EstadoSubteFragment extends Fragment {
         // Definimos la configuracion de la DB.
         RealmConfiguration config = new RealmConfiguration.Builder(getActivity())
                 .name("lines.realm")
+                .schemaVersion(1)
                 .build();
-        // Start Realm Instance
-        realm = Realm.getInstance(config);
+        try {
+            // Create a new empty instance
+            realm = Realm.getInstance(config);
+        } catch (RealmMigrationNeededException ex) {
+            Log.d(LOG_TAG, "Error:" + ex.getLocalizedMessage());
+            // Clear the real from last time
+            Realm.deleteRealm(config);
+            // create a new instance
+            Realm.migrateRealm(config);
+        }
+
     }
 
     @SuppressWarnings("deprecation")
@@ -80,7 +92,7 @@ public class EstadoSubteFragment extends Fragment {
             RealmResults<SubwayLine> datasetLineas = realm.where(SubwayLine.class).findAll();
 
             if (utils.isNetworkConnected()) {
-                new LoadSubwayData(realm).getDataFromApi();
+                new LoadSubwayData(realm).getStatusDataFromApi();
                 realm.addChangeListener(realmChangeListener);
             } else {
                 Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
@@ -161,7 +173,7 @@ public class EstadoSubteFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            new LoadSubwayData(realm).getDataFromApi();
+            new LoadSubwayData(realm).getStatusDataFromApi();
             return "Update";
         }
 

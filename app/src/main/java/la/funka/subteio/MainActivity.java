@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private DrawerLayout drawerLayout;
-    private View content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         initToolbar();
         setupDrawerLayout();
-        content = findViewById(R.id.content);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.container, new EstadoSubteFragment()).commit();

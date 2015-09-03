@@ -14,6 +14,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.model.SubwayLine;
+import la.funka.subteio.model.SubwayStation;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -43,7 +44,7 @@ public class LoadSubwayData {
     /**
      * API estado del subte.
      * * * */
-    public void getDataFromApi() {
+    public void getStatusDataFromApi() {
         String API_URL = "http://www.metrovias.com.ar";
 
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
@@ -63,18 +64,58 @@ public class LoadSubwayData {
                 .setConverter(new GsonConverter(gson))
                 .build();
 
-        SubwayStatusApi subwayStatusApi = restAdapter.create(SubwayStatusApi.class);
+        SubwayApi subwayApi = restAdapter.create(SubwayApi.class);
 
-        subwayStatusApi.loadSubwayStatus(new Callback<List<SubwayLine>>() {
+        subwayApi.loadSubwayStatus(new Callback<List<SubwayLine>>() {
             @Override
             public void success(List<SubwayLine> subwayLine, Response response) {
                 // Guardamos la data en cache.
                 realm.beginTransaction();
-                List<SubwayLine> realmSubwayStatus = realm.copyToRealmOrUpdate(subwayLine);
+                realm.copyToRealmOrUpdate(subwayLine);
                 realm.commitTransaction();
                 // Eliminamos la linea que no se utiliza.
                 removeUnunsedLine("P");
                 removeUnunsedLine("U");
+                realm.addChangeListener(realmChangeListener);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "ERROR: " + error.getLocalizedMessage());
+            }
+        });
+    }
+
+
+    public void getStationsDataFromApi() {
+        String API_URL = "https://subteio.herokuapp.com";
+
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(API_URL)
+                .setConverter(new GsonConverter(gson))
+                .build();
+
+        SubwayApi subwayApi = restAdapter.create(SubwayApi.class);
+
+        subwayApi.loadStations(new Callback<List<SubwayStation>>() {
+            @Override
+            public void success(List<SubwayStation> subwayStations, Response response) {
+                // Open a transaction to store items into the realm
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(subwayStations);
+                realm.commitTransaction();
                 realm.addChangeListener(realmChangeListener);
             }
 
