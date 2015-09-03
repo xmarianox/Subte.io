@@ -64,9 +64,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 .name("stations.realm")
                 .build();
         // Clear the real from last time
-        //Realm.deleteRealm(realmConfiguration);
-        // Create a new empty instance
-        //realm = Realm.getInstance(realmConfiguration);
         try {
             // Create a new empty instance
             realm = Realm.getInstance(realmConfiguration);

@@ -5,6 +5,8 @@
 
     <!-- Menu items -->
     <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Drawer menu -->
     <string name="title_section_estado">Estado</string>
@@ -177,8 +179,6 @@
     <string name="dev_3_twitter">"@itswhoyall"</string>
 
     <!-- Textos a cambiar -->
-    <string name="title_activity_detalle_linea">DetalleLineaActivity</string>
-    <string name="title_activity_detalle_estacion">DetalleEstacion</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -1,13 +1,16 @@
 package la.funka.subteio;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
@@ -24,7 +27,6 @@ import la.funka.subteio.fragments.MapaSubteFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     private DrawerLayout drawerLayout;
 
     @Override
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
 
         initToolbar();
+
         setupDrawerLayout();
 
         if (savedInstanceState == null) {
@@ -56,34 +59,48 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
-        view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                menuItem.setChecked(true);
-                drawerLayout.closeDrawers();
-
-                switch (menuItem.getItemId()) {
-
-                    case R.id.status_view_fragment:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new EstadoSubteFragment()).commit();
-                        return true;
-
-                    case R.id.map_view_fragment:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new MapaSubteFragment()).commit();
-                        return true;
-
-                    case R.id.about_view_fragment:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, new AboutFragment()).commit();
-                        return true;
-
-                    default:
-                        Log.d(LOG_TAG, "Algo salio mal...");
-                        return true;
-                }
+                selectDrawerItem(menuItem);
+                return true;
             }
         });
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void selectDrawerItem(MenuItem menuItem) {
+
+        Fragment fragment = null;
+        Class fragmentClass;
+
+        switch (menuItem.getItemId()) {
+            case R.id.status_view_fragment:
+                fragmentClass = EstadoSubteFragment.class;
+                break;
+            case R.id.map_view_fragment:
+                fragmentClass = MapaSubteFragment.class;
+                break;
+            case R.id.about_view_fragment:
+                fragmentClass = AboutFragment.class;
+                break;
+            default:
+                fragmentClass = EstadoSubteFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -95,5 +112,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
