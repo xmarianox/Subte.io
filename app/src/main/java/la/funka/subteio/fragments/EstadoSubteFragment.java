@@ -88,7 +88,7 @@ public class EstadoSubteFragment extends Fragment {
 
         // Clear the real from last time
         Realm.deleteRealm(config);
-        /*Realm.deleteRealm(configDate);*/
+        //Realm.deleteRealm(configDate);
         // Create a new empty instance
         realm = Realm.getInstance(config);
         realmDate = Realm.getInstance(configDate);
@@ -107,12 +107,6 @@ public class EstadoSubteFragment extends Fragment {
 
             // Query para traer todos los items.
             RealmResults<SubwayLine> datasetLineas = realm.where(SubwayLine.class).findAll();
-
-            // Query para traer la fecha.
-            RealmResults<LastUpdateDate> dateRealmResults = realmDate.where(LastUpdateDate.class).findAll();
-            // Log.d(LOG_TAG, "LAST UPDATE: " + dateRealmResults.toString());
-            TextView lastUpdateText = (TextView) getActivity().findViewById(R.id.last_update);
-            lastUpdateText.setText(dateRealmResults.get(0).getDate_text());
 
             if (utils.isNetworkConnected()) {
                 task = new UpdateSubwayStatus().execute();
@@ -151,6 +145,13 @@ public class EstadoSubteFragment extends Fragment {
             setRecyclerViewLayoutManager(listaRecyclerView);
 
             realm.addChangeListener(realmChangeListener);
+
+            // Query para traer la fecha.
+            RealmResults<LastUpdateDate> dateRealmResults = realmDate.where(LastUpdateDate.class).findAll();
+            TextView lastUpdateText = (TextView) getActivity().findViewById(R.id.last_update);
+            if (dateRealmResults.size() != 0) {
+                lastUpdateText.setText(dateRealmResults.get(0).getDate_text());
+            }
         }
     }
 
@@ -198,7 +199,8 @@ public class EstadoSubteFragment extends Fragment {
                 realm.commitTransaction();
 
                 // Guardamos la fecha de la actualización
-                SimpleDateFormat formato = new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+                // DATE pettern: 'Última actualiación:' EEEE d 'a las' HH:mm:ss 'hs'
+                SimpleDateFormat formato = new SimpleDateFormat("EEEE d 'a las' HH:mm:ss 'hs'", new Locale("es", "ES"));
                 String fecha = formato.format(new Date());
 
                 realmDate.beginTransaction();

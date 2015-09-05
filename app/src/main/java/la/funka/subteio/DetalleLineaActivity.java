@@ -102,8 +102,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
             // get linea data list
             ArrayList<String> dataset = getStationsDataset(EXTRA_NOMBRE_LINEA);
 
-            Log.d(TAG, "Estaciones: " + dataset.toString());
-
             // set listView
             ListView listView = (ListView) findViewById(R.id.listview);
             adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, dataset);
