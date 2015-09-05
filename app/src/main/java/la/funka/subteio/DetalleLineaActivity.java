@@ -1,6 +1,7 @@
 package la.funka.subteio;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,16 +19,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.exceptions.RealmMigrationNeededException;
 import la.funka.subteio.adapters.StableArrayAdapter;
 import la.funka.subteio.model.SubwayStation;
-import la.funka.subteio.service.LoadSubwayData;
+import la.funka.subteio.service.RestAdapterStationClient;
 import la.funka.subteio.utils.Util;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -38,13 +42,13 @@ public class DetalleLineaActivity extends AppCompatActivity {
     private static final String TAG = "DetalleLineaActivity";
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private StableArrayAdapter adapter;
-    private ArrayList<String> dataset;
-    private Util utils;
+    private AsyncTask task;
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
         public void onChange() {
             realm.refresh();
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -64,17 +68,8 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 .name("stations.realm")
                 .build();
         // Clear the real from last time
-        try {
-            // Create a new empty instance
-            realm = Realm.getInstance(realmConfiguration);
-        } catch (RealmMigrationNeededException ex) {
-            Log.d(TAG, "Error:" + ex.getLocalizedMessage());
-            // Clear the real from last time
-            Realm.deleteRealm(realmConfiguration);
-            // create a new instance
-            Realm.migrateRealm(realmConfiguration);
-        }
-
+        // Realm.deleteRealm(realmConfiguration);
+        realm = Realm.getInstance(realmConfiguration);
     }
 
     @Override
@@ -83,7 +78,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
         if (adapter == null) {
 
-            utils = new Util(this);
+            Util utils = new Util(this);
 
             final Intent intent = getIntent();
 
@@ -97,17 +92,17 @@ public class DetalleLineaActivity extends AppCompatActivity {
             textView.setText(lineaText);
 
             if (utils.isNetworkConnected()) {
-                new LoadSubwayData(realm).getStationsDataFromApi();
+                task = new UpdateSubwayStations().execute();
                 realm.addChangeListener(realmChangeListener);
             }
-            // LoadData
-            //loadStations();
 
             // get linea data
             getStationInformation(EXTRA_NOMBRE_LINEA);
 
             // get linea data list
-            getStationsDataset(EXTRA_NOMBRE_LINEA);
+            ArrayList<String> dataset = getStationsDataset(EXTRA_NOMBRE_LINEA);
+
+            Log.d(TAG, "Estaciones: " + dataset.toString());
 
             // set listView
             ListView listView = (ListView) findViewById(R.id.listview);
@@ -182,16 +177,21 @@ public class DetalleLineaActivity extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    private void getStationsDataset(String lineaName) {
+    private ArrayList<String> getStationsDataset(String lineaName) {
         // initData
         RealmResults<SubwayStation> subwayStationsDataset = realm.where(SubwayStation.class)
                 .equalTo("line_name", lineaName)
                 .findAll();
 
-        dataset = new ArrayList<>();
+        Log.d(TAG, "Estaciones: " + subwayStationsDataset.toString());
+
+        ArrayList<String> estacionesList = new ArrayList<>();
+
         for (int i = 0; i < subwayStationsDataset.size(); i++) {
-            dataset.add(subwayStationsDataset.get(i).getStation_name());
+            estacionesList.add(subwayStationsDataset.get(i).getStation_name());
         }
+
+        return estacionesList;
     }
 
     private void getStationInformation(String lineaName) {
@@ -341,6 +341,11 @@ public class DetalleLineaActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
+
+        if (task != null) {
+            task.cancel(true);
+            task = null;
+        }
     }
 
     @Override
@@ -380,5 +385,48 @@ public class DetalleLineaActivity extends AppCompatActivity {
                 break;
         }
         return lineImage;
+    }
+
+    /**
+     *  REST adapter Client
+     * */
+    public void getSubwayStationData() {
+        RestAdapterStationClient.get().loadStations(new Callback<List<SubwayStation>>() {
+            @Override
+            public void success(List<SubwayStation> subwayStations, Response response) {
+                // Open a transaction to store items into the realm
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(subwayStations);
+                realm.commitTransaction();
+                realm.addChangeListener(realmChangeListener);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "RetrofitError: " + error.getLocalizedMessage());
+            }
+        });
+    }
+
+    /**
+     * Update
+     * * * */
+    private class UpdateSubwayStations extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            getSubwayStationData();
+            return "Update";
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+        }
     }
 }

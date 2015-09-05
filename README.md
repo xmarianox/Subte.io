@@ -10,6 +10,7 @@ El estado es provisto por [Metrovias](http://www.metrovias.com.ar).
 ## Roadmap de para la primera BETA.
 
 - [x] Cambiar el color de CardView para alertar al usuario cuando un servicio esta demorado.
+- [x] Agregar la fecha de la última actualización.
 - [ ] Revisar la tabla de horarios, porque no esta entrando todo el contenido en las pantallas más pequeñas.
 - [x] Agregar las imagenes correspondientes a las lineas para la vista detalle de estación.
 - [ ] Solucionar los errores en el Fragment del mapa.

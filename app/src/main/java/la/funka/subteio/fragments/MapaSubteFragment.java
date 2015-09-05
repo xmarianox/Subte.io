@@ -22,9 +22,7 @@ public class MapaSubteFragment extends Fragment {
     private static final String LOG_TAG = MapaSubteFragment.class.getSimpleName();
 
     private Realm realm;
-
     private GoogleMap map;
-
 
     public MapaSubteFragment() {
         // Required empty public constructor

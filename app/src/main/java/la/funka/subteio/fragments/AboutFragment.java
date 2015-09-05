@@ -1,5 +1,6 @@
 package la.funka.subteio.fragments;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,6 +60,11 @@ public class AboutFragment extends Fragment {
         // App Image
         ImageView imageView = (ImageView) getActivity().findViewById(R.id.app_logo);
         Picasso.with(getActivity()).load(R.drawable.ic_icon_app).fit().centerCrop().into(imageView);
+
+        ObjectAnimator moveAnim = ObjectAnimator.ofFloat(imageView, "Y", 300);
+        moveAnim.setDuration(2000);
+        moveAnim.setInterpolator(new BounceInterpolator());
+        moveAnim.start();
 
         // Nano
         TextView dev1 = (TextView) getActivity().findViewById(R.id.twitter_dev_1);

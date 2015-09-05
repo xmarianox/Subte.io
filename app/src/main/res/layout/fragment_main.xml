@@ -10,11 +10,30 @@
     android:id="@+id/container_recycler"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_section_estado"
-        style="@style/HeaderSection"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="match_parent"
+            android:text="@string/title_section_estado"
+            style="@style/HeaderSection"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:id="@+id/last_update"
+            android:gravity="right"
+            android:layout_gravity="right"
+            style="@style/HeaderSection" />
+
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

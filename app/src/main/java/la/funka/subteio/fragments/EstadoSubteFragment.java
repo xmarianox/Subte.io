@@ -13,17 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.exceptions.RealmMigrationNeededException;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
+import la.funka.subteio.model.LastUpdateDate;
 import la.funka.subteio.model.SubwayLine;
-import la.funka.subteio.service.LoadSubwayData;
+import la.funka.subteio.service.RestAdapterClient;
 import la.funka.subteio.utils.Util;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -38,6 +47,14 @@ public class EstadoSubteFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout = null;
     private Util utils;
     private AsyncTask task;
+    // Realm Data
+    private Realm realmDate;
+    private RealmChangeListener realmChangeListenerDate = new RealmChangeListener() {
+        @Override
+        public void onChange() {
+            realmDate.refresh();
+        }
+    };
     // Realm DB.
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
@@ -64,17 +81,17 @@ public class EstadoSubteFragment extends Fragment {
                 .name("lines.realm")
                 .schemaVersion(1)
                 .build();
-        try {
-            // Create a new empty instance
-            realm = Realm.getInstance(config);
-        } catch (RealmMigrationNeededException ex) {
-            Log.d(LOG_TAG, "Error:" + ex.getLocalizedMessage());
-            // Clear the real from last time
-            Realm.deleteRealm(config);
-            // create a new instance
-            Realm.migrateRealm(config);
-        }
+        // Definimos la configuracion de la DB.
+        RealmConfiguration configDate = new RealmConfiguration.Builder(getActivity())
+                .name("realmDate.realm")
+                .build();
 
+        // Clear the real from last time
+        Realm.deleteRealm(config);
+        /*Realm.deleteRealm(configDate);*/
+        // Create a new empty instance
+        realm = Realm.getInstance(config);
+        realmDate = Realm.getInstance(configDate);
     }
 
     @SuppressWarnings("deprecation")
@@ -91,8 +108,14 @@ public class EstadoSubteFragment extends Fragment {
             // Query para traer todos los items.
             RealmResults<SubwayLine> datasetLineas = realm.where(SubwayLine.class).findAll();
 
+            // Query para traer la fecha.
+            RealmResults<LastUpdateDate> dateRealmResults = realmDate.where(LastUpdateDate.class).findAll();
+            // Log.d(LOG_TAG, "LAST UPDATE: " + dateRealmResults.toString());
+            TextView lastUpdateText = (TextView) getActivity().findViewById(R.id.last_update);
+            lastUpdateText.setText(dateRealmResults.get(0).getDate_text());
+
             if (utils.isNetworkConnected()) {
-                new LoadSubwayData(realm).getStatusDataFromApi();
+                task = new UpdateSubwayStatus().execute();
                 realm.addChangeListener(realmChangeListener);
             } else {
                 Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
@@ -135,6 +158,7 @@ public class EstadoSubteFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+        realmDate.close();
         if (task != null) {
             task.cancel(true);
             task = null;
@@ -162,6 +186,62 @@ public class EstadoSubteFragment extends Fragment {
     }
 
     /**
+     *  REST adapter Client
+     * */
+    public void getSubwayData() {
+        RestAdapterClient.get().loadSubwayStatus(new Callback<List<SubwayLine>>() {
+            @Override
+            public void success(List<SubwayLine> subwayLines, Response response) {
+                // Guardamos la data en cache.
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(subwayLines);
+                realm.commitTransaction();
+
+                // Guardamos la fecha de la actualización
+                SimpleDateFormat formato = new SimpleDateFormat("EEEE d 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+                String fecha = formato.format(new Date());
+
+                realmDate.beginTransaction();
+
+                LastUpdateDate update = new LastUpdateDate();
+                update.setDate_id(1);
+                update.setDate_text(fecha);
+
+                realmDate.copyToRealmOrUpdate(update);
+
+                realmDate.commitTransaction();
+                realmDate.addChangeListener(realmChangeListenerDate);
+
+                // Eliminamos la linea que no se utiliza.
+                removeUnunsedLine("P");
+                removeUnunsedLine("U");
+
+                realm.addChangeListener(realmChangeListener);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(LOG_TAG, "RetrofitError: " + error.getLocalizedMessage());
+            }
+        });
+    }
+
+    /**
+     * Limpiamos el item de la linea que no se utiliza.
+     * */
+    public void removeUnunsedLine(String lineItem) {
+        // Limpiamos la linea U de la colección.
+        RealmResults<SubwayLine> results = realm.where(SubwayLine.class)
+                .equalTo("lineName", lineItem)
+                .findAll();
+        // Remove item
+        realm.beginTransaction();
+        results.remove(0);
+        results.removeLast();
+        realm.commitTransaction();
+    }
+
+    /**
      * Update
      * * * */
     private class UpdateSubwayStatus extends AsyncTask<String, Void, String> {
@@ -173,7 +253,7 @@ public class EstadoSubteFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
-            new LoadSubwayData(realm).getStatusDataFromApi();
+            getSubwayData();
             return "Update";
         }
 
