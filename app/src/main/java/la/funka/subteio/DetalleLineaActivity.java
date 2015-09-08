@@ -18,20 +18,28 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.adapters.StableArrayAdapter;
 import la.funka.subteio.model.SubwayStation;
-import la.funka.subteio.service.RestAdapterStationClient;
+import la.funka.subteio.service.SubwayApi;
 import la.funka.subteio.utils.Util;
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -389,21 +397,47 @@ public class DetalleLineaActivity extends AppCompatActivity {
      *  REST adapter Client
      * */
     public void getSubwayStationData() {
-        RestAdapterStationClient.get().loadStations(new Callback<List<SubwayStation>>() {
+
+        // setup GSON builder
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
             @Override
-            public void success(List<SubwayStation> subwayStations, Response response) {
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+
+        // Retrofit 2.0 REST adapter
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://subteio.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        // REST api
+        SubwayApi service = retrofit.create(SubwayApi.class);
+
+        Call<List<SubwayStation>> call = service.loadStations();
+        call.enqueue(new Callback<List<SubwayStation>>() {
+            @Override
+            public void onResponse(Response<List<SubwayStation>> response) {
+                Log.d(TAG, "Response message: " + response.message());
                 // Open a transaction to store items into the realm
                 realm.beginTransaction();
-                realm.copyToRealmOrUpdate(subwayStations);
+                realm.copyToRealmOrUpdate(response.body());
                 realm.commitTransaction();
                 realm.addChangeListener(realmChangeListener);
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.d(TAG, "RetrofitError: " + error.getLocalizedMessage());
+            public void onFailure(Throwable t) {
+                Log.d(TAG, "RetrofitError: " + t.getLocalizedMessage());
             }
         });
+
     }
 
     /**

@@ -67,11 +67,9 @@ public class MapaSubteFragment extends Fragment {
             return;
         }
         map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-
         if (map == null) {
             return;
         }
-
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
 }

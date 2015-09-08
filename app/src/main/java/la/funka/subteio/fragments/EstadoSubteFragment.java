@@ -15,6 +15,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,16 +28,19 @@ import java.util.Locale;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
 import la.funka.subteio.model.LastUpdateDate;
 import la.funka.subteio.model.SubwayLine;
-import la.funka.subteio.service.RestAdapterClient;
+import la.funka.subteio.service.SubwayApi;
 import la.funka.subteio.utils.Util;
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Mariano Molina on 03/02/2015.
@@ -111,6 +119,7 @@ public class EstadoSubteFragment extends Fragment {
             if (utils.isNetworkConnected()) {
                 task = new UpdateSubwayStatus().execute();
                 realm.addChangeListener(realmChangeListener);
+                realmDate.addChangeListener(realmChangeListenerDate);
             } else {
                 Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
             }
@@ -130,6 +139,7 @@ public class EstadoSubteFragment extends Fragment {
                     if (utils.isNetworkConnected()) {
                         task = new UpdateSubwayStatus().execute();
                         realm.addChangeListener(realmChangeListener);
+                        realmDate.addChangeListener(realmChangeListenerDate);
                     } else {
                         Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
                     }
@@ -190,12 +200,38 @@ public class EstadoSubteFragment extends Fragment {
      *  REST adapter Client
      * */
     public void getSubwayData() {
-        RestAdapterClient.get().loadSubwayStatus(new Callback<List<SubwayLine>>() {
+
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
             @Override
-            public void success(List<SubwayLine> subwayLines, Response response) {
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getDeclaringClass().equals(RealmObject.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+
+        // Retrofit 2.0 REST adapter
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.metrovias.com.ar/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        // REST api
+        SubwayApi service = retrofit.create(SubwayApi.class);
+
+        Call<List<SubwayLine>> call = service.loadSubwayStatus();
+        call.enqueue(new Callback<List<SubwayLine>>() {
+            @Override
+            public void onResponse(Response<List<SubwayLine>> response) {
+
+                Log.d(LOG_TAG, "Response message: " + response.message());
+
                 // Guardamos la data en cache.
                 realm.beginTransaction();
-                realm.copyToRealmOrUpdate(subwayLines);
+                realm.copyToRealmOrUpdate(response.body());
                 realm.commitTransaction();
 
                 // Guardamos la fecha de la actualización
@@ -222,8 +258,8 @@ public class EstadoSubteFragment extends Fragment {
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.d(LOG_TAG, "RetrofitError: " + error.getLocalizedMessage());
+            public void onFailure(Throwable t) {
+                Log.d(LOG_TAG, "RetrofitError: " + t.getLocalizedMessage());
             }
         });
     }
