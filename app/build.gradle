@@ -41,10 +41,16 @@ dependencies {
     compile 'com.android.support:palette-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.google.android.gms:play-services:7.8.0'
+    // crash report
     compile('com.crashlytics.sdk.android:crashlytics:2.5.1@aar') {
         transitive = true;
     }
+    // db
     compile 'io.realm:realm-android:0.82.2'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    // image manage
     compile 'com.squareup.picasso:picasso:2.5.2'
+    // http libs
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta1'
+
 }

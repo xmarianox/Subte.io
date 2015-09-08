@@ -1,10 +1,12 @@
 package la.funka.subteio.service;
 
+
+
 import java.util.List;
 
 import la.funka.subteio.model.SubwayLine;
 import la.funka.subteio.model.SubwayStation;
-import retrofit.Callback;
+import retrofit.Call;
 import retrofit.http.GET;
 
 /**
@@ -13,8 +15,8 @@ import retrofit.http.GET;
  */
 public interface SubwayApi {
     @GET("/Subterraneos/Estado?site=Metrovias")
-    void loadSubwayStatus(Callback<List<SubwayLine>> callback);
+    Call<List<SubwayLine>> loadSubwayStatus();
 
     @GET("/subwayStations")
-    void loadStations(Callback<List<SubwayStation>> listCallback);
+    Call<List<SubwayStation>> loadStations();
 }
