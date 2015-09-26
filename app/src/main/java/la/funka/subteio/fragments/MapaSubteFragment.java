@@ -3,6 +3,7 @@ package la.funka.subteio.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -66,58 +68,109 @@ public class MapaSubteFragment extends Fragment {
         super.onResume();
         if (map == null) {
             map = supportMapFragment.getMap();
-            /*map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            map.setMyLocationEnabled(true);
-            // Centramos el mapa en BUENOS AIRES
-            LatLng BUE = new LatLng(-34.6160275,-58.4333203);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(BUE, 11));*/
         }
-
         /**
          * [SubwayStation = [
-         *  {id_station:70},
          *  {station_name:Plaza de Mayo},
-         *  {id_line:1},
          *  {line_name:A},
          *  {lon:-58.370968499724384},
          *  {lat:-34.60881030966099},
          *  {address:Hipólito Yrigoyen 300},
-         *  {elevador:false},
-         *  {escalator:false},
-         *  {toilets:true},
-         *  {consultation:true},
-         *  {wifi:false},
-         *  {bus_lines:7, 8, 22, 28, 29, 33, 50, 56, 64, 86, 91, 93, 102, 105, 111, 126, 129, 130, 143, 146, 152, 159, 195}
          * ],
          * */
-
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setMyLocationEnabled(true);
         // Centramos el mapa en BUENOS AIRES
         LatLng BUE = new LatLng(-34.6160275,-58.4333203);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(BUE, 11));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(BUE, 13));
+
+        // Get data from DB
+        RealmResults<SubwayStation> subwayStations = realm.where(SubwayStation.class).findAll();
+
+        RealmResults<SubwayStation> linea_A = realm.where(SubwayStation.class).equalTo("line_name", "A").findAll();
+        parsePolylines(map, linea_A);
+
+        RealmResults<SubwayStation> linea_B = realm.where(SubwayStation.class).equalTo("line_name", "B").findAll();
+        parsePolylines(map, linea_B);
+
+        RealmResults<SubwayStation> linea_C = realm.where(SubwayStation.class).equalTo("line_name", "C").findAll();
+        parsePolylines(map, linea_C);
+
+        RealmResults<SubwayStation> linea_D = realm.where(SubwayStation.class).equalTo("line_name", "D").findAll();
+        parsePolylines(map, linea_D);
+
+        RealmResults<SubwayStation> linea_E = realm.where(SubwayStation.class).equalTo("line_name", "E").findAll();
+        parsePolylines(map, linea_E);
+
+        RealmResults<SubwayStation> linea_H = realm.where(SubwayStation.class).equalTo("line_name", "H").findAll();
+        parsePolylines(map, linea_H);
 
         // Add points
-        parseGeoData(map);
-
+        parseGeoData(map, subwayStations);
     }
 
-    private void parseGeoData(GoogleMap googleMap) {
+    /**
+     *  MARKERS
+     * */
+    private void parseGeoData(GoogleMap googleMap, RealmResults<SubwayStation> dataset) {
         MarkerOptions markerOptions = new MarkerOptions();
 
-        RealmResults<SubwayStation> subwayStations = realm.where(SubwayStation.class).findAll();
-        Log.d(LOG_TAG, subwayStations.toString());
-
-        for (int i = 0; i < subwayStations.size() ; i++) {
+        for (int i = 0; i < dataset.size() ; i++) {
             // station name
-            markerOptions.title(subwayStations.get(i).getStation_name());
+            markerOptions.title(dataset.get(i).getStation_name());
             // station address
-            markerOptions.snippet(subwayStations.get(i).getAddress());
+            markerOptions.snippet(dataset.get(i).getAddress());
             // station position.
-            markerOptions.position(new LatLng(subwayStations.get(i).getLat(), subwayStations.get(i).getLon()));
+            markerOptions.position(new LatLng(dataset.get(i).getLat(), dataset.get(i).getLon()));
             // Add Marker
             googleMap.addMarker(markerOptions);
         }
+    }
+
+    /**
+     *  POLYLINES
+     * */
+    private void parsePolylines(GoogleMap googleMap, RealmResults<SubwayStation> dataLines) {
+        PolylineOptions options = new PolylineOptions().geodesic(true);
+
+        for (int i = 0; i < dataLines.size(); i++) {
+            // lineColor
+            options.color(getLineColor(dataLines.get(i).getLine_name()));
+            // lines
+            options.add(new LatLng(dataLines.get(i).getLat(), dataLines.get(i).getLon()));
+            // Add lines
+            googleMap.addPolyline(options);
+        }
+    }
+
+    /**
+     *  LINE COLOR
+     * */
+    private int getLineColor(String lineName) {
+        int lineColor = 0;
+
+        switch (lineName) {
+            case "A":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_a);
+                break;
+            case "B":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_b);
+                break;
+            case "C":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_c);
+                break;
+            case "D":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_d);
+                break;
+            case "E":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_e);
+                break;
+            case "H":
+                lineColor = ContextCompat.getColor(getActivity(), R.color.linea_h);
+                break;
+        }
+
+        return lineColor;
     }
 
     @Override
