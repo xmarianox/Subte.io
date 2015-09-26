@@ -69,17 +69,10 @@ public class MapaSubteFragment extends Fragment {
         if (map == null) {
             map = supportMapFragment.getMap();
         }
-        /**
-         * [SubwayStation = [
-         *  {station_name:Plaza de Mayo},
-         *  {line_name:A},
-         *  {lon:-58.370968499724384},
-         *  {lat:-34.60881030966099},
-         *  {address:Hipólito Yrigoyen 300},
-         * ],
-         * */
+
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.setMyLocationEnabled(true);
+
         // Centramos el mapa en BUENOS AIRES
         LatLng BUE = new LatLng(-34.6160275,-58.4333203);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(BUE, 13));
