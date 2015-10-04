@@ -87,11 +87,13 @@ public class EstadoSubteFragment extends Fragment {
         // Definimos la configuracion de la DB.
         RealmConfiguration config = new RealmConfiguration.Builder(getActivity())
                 .name("lines.realm")
+                .deleteRealmIfMigrationNeeded()
                 .schemaVersion(1)
                 .build();
         // Definimos la configuracion de la DB.
         RealmConfiguration configDate = new RealmConfiguration.Builder(getActivity())
                 .name("realmDate.realm")
+                .deleteRealmIfMigrationNeeded()
                 .build();
 
         // Clear the real from last time

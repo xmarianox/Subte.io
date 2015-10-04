@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +56,7 @@ public class MapaSubteFragment extends Fragment {
         // configure realm
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity())
                 .name("stations.realm")
+                .deleteRealmIfMigrationNeeded()
                 .build();
         // Realm.deleteRealm(realmConfiguration);
         // Clear the real from last time

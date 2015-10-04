@@ -74,6 +74,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
         // configure realm
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
                 .name("stations.realm")
+                .deleteRealmIfMigrationNeeded()
                 .build();
         // Clear the real from last time
         // Realm.deleteRealm(realmConfiguration);

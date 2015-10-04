@@ -13,6 +13,7 @@
 -keep @io.realm.annotations.RealmModule class *
 -dontwarn javax.**
 -dontwarn io.realm.**
+
 ## RETROFIT
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
