@@ -119,7 +119,7 @@ public class EstadoSubteFragment extends Fragment {
             RealmResults<SubwayLine> datasetLineas = realm.where(SubwayLine.class).findAll();
 
             if (utils.isNetworkConnected()) {
-                task = new UpdateSubwayStatus().execute();
+                getSubwayData();
                 realm.addChangeListener(realmChangeListener);
                 realmDate.addChangeListener(realmChangeListenerDate);
             } else {
@@ -227,8 +227,7 @@ public class EstadoSubteFragment extends Fragment {
         Call<List<SubwayLine>> call = service.loadSubwayStatus();
         call.enqueue(new Callback<List<SubwayLine>>() {
             @Override
-            public void onResponse(Response<List<SubwayLine>> response) {
-
+            public void onResponse(Response<List<SubwayLine>> response, Retrofit retrofit) {
                 Log.d(LOG_TAG, "Response message: " + response.message());
 
                 // Guardamos la data en cache.

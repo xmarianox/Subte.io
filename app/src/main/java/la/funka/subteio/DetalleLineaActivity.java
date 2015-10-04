@@ -1,7 +1,6 @@
 package la.funka.subteio;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -23,6 +22,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
     private static final String TAG = "DetalleLineaActivity";
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private StableArrayAdapter adapter;
-    private AsyncTask task;
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
         @Override
@@ -101,7 +100,11 @@ public class DetalleLineaActivity extends AppCompatActivity {
             textView.setText(lineaText);
 
             if (utils.isNetworkConnected()) {
-                task = new UpdateSubwayStations().execute();
+                try {
+                    getSubwayStationData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 realm.addChangeListener(realmChangeListener);
             }
 
@@ -348,11 +351,6 @@ public class DetalleLineaActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
-
-        if (task != null) {
-            task.cancel(true);
-            task = null;
-        }
     }
 
     @Override
@@ -397,7 +395,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
     /**
      *  REST adapter Client
      * */
-    public void getSubwayStationData() {
+    public void getSubwayStationData() throws IOException {
 
         // setup GSON builder
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
@@ -424,7 +422,7 @@ public class DetalleLineaActivity extends AppCompatActivity {
         Call<List<SubwayStation>> call = service.loadStations();
         call.enqueue(new Callback<List<SubwayStation>>() {
             @Override
-            public void onResponse(Response<List<SubwayStation>> response) {
+            public void onResponse(Response<List<SubwayStation>> response, Retrofit retrofit) {
                 Log.d(TAG, "Response message: " + response.message());
                 // Open a transaction to store items into the realm
                 realm.beginTransaction();
@@ -441,25 +439,4 @@ public class DetalleLineaActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Update
-     * * * */
-    private class UpdateSubwayStations extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            getSubwayStationData();
-            return "Update";
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            super.onPostExecute(response);
-        }
-    }
 }
