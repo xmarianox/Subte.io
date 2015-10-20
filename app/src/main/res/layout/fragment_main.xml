@@ -29,14 +29,14 @@
             android:text="@string/title_section_estado"
             style="@style/HeaderSection"/>
 
-        <TextView
+        <!--<TextView
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:id="@+id/last_update"
             android:gravity="right"
             android:layout_gravity="right"
-            style="@style/HeaderSection" />
+            style="@style/HeaderSection" />-->
 
     </LinearLayout>
 

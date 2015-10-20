@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -115,6 +116,8 @@ public class MapaSubteFragment extends Fragment {
             markerOptions.snippet(dataset.get(i).getAddress());
             // station position.
             markerOptions.position(new LatLng(dataset.get(i).getLat(), dataset.get(i).getLon()));
+            // image
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pointer));
             // Add Marker
             googleMap.addMarker(markerOptions);
         }

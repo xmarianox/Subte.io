@@ -52,5 +52,5 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 
-    compile 'com.firebase:firebase-client-android:2.4.0'
+//    compile 'com.firebase:firebase-client-android:2.4.0'
 }

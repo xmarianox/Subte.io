@@ -13,17 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -32,7 +28,6 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import la.funka.subteio.R;
 import la.funka.subteio.adapters.LineaAdapter;
-import la.funka.subteio.model.LastUpdateDate;
 import la.funka.subteio.model.SubwayLine;
 import la.funka.subteio.service.SubwayApi;
 import la.funka.subteio.utils.Util;
@@ -55,14 +50,14 @@ public class EstadoSubteFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout = null;
     private Util utils;
     private AsyncTask task;
-    // Realm Data
+    /*// Realm Data
     private Realm realmDate;
     private RealmChangeListener realmChangeListenerDate = new RealmChangeListener() {
         @Override
         public void onChange() {
             realmDate.refresh();
         }
-    };
+    };*/
     // Realm DB.
     private Realm realm;
     private RealmChangeListener realmChangeListener = new RealmChangeListener() {
@@ -90,18 +85,18 @@ public class EstadoSubteFragment extends Fragment {
                 .deleteRealmIfMigrationNeeded()
                 .schemaVersion(1)
                 .build();
-        // Definimos la configuracion de la DB.
+        /*// Definimos la configuracion de la DB.
         RealmConfiguration configDate = new RealmConfiguration.Builder(getActivity())
                 .name("realmDate.realm")
                 .deleteRealmIfMigrationNeeded()
-                .build();
+                .build();*/
 
         // Clear the real from last time
         Realm.deleteRealm(config);
         //Realm.deleteRealm(configDate);
         // Create a new empty instance
         realm = Realm.getInstance(config);
-        realmDate = Realm.getInstance(configDate);
+        //realmDate = Realm.getInstance(configDate);
     }
 
     @SuppressWarnings("deprecation")
@@ -121,7 +116,7 @@ public class EstadoSubteFragment extends Fragment {
             if (utils.isNetworkConnected()) {
                 getSubwayData();
                 realm.addChangeListener(realmChangeListener);
-                realmDate.addChangeListener(realmChangeListenerDate);
+//                realmDate.addChangeListener(realmChangeListenerDate);
             } else {
                 Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
             }
@@ -141,7 +136,7 @@ public class EstadoSubteFragment extends Fragment {
                     if (utils.isNetworkConnected()) {
                         task = new UpdateSubwayStatus().execute();
                         realm.addChangeListener(realmChangeListener);
-                        realmDate.addChangeListener(realmChangeListenerDate);
+                        //realmDate.addChangeListener(realmChangeListenerDate);
                     } else {
                         Snackbar.make(container_recycler, R.string.network_error, Snackbar.LENGTH_LONG).show();
                     }
@@ -159,11 +154,11 @@ public class EstadoSubteFragment extends Fragment {
             realm.addChangeListener(realmChangeListener);
 
             // Query para traer la fecha.
-            RealmResults<LastUpdateDate> dateRealmResults = realmDate.where(LastUpdateDate.class).findAll();
+            /*RealmResults<LastUpdateDate> dateRealmResults = realmDate.where(LastUpdateDate.class).findAll();
             TextView lastUpdateText = (TextView) getActivity().findViewById(R.id.last_update);
             if (dateRealmResults.size() != 0) {
                 lastUpdateText.setText(dateRealmResults.get(0).getDate_text());
-            }
+            }*/
         }
     }
 
@@ -171,7 +166,7 @@ public class EstadoSubteFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
-        realmDate.close();
+        //realmDate.close();
         if (task != null) {
             task.cancel(true);
             task = null;
@@ -235,6 +230,7 @@ public class EstadoSubteFragment extends Fragment {
                 realm.copyToRealmOrUpdate(response.body());
                 realm.commitTransaction();
 
+                /*
                 // Guardamos la fecha de la actualización
                 // DATE pettern: 'Última actualiación:' EEEE d 'a las' HH:mm:ss 'hs'
                 SimpleDateFormat formato = new SimpleDateFormat("EEEE d 'a las' HH:mm:ss 'hs'", new Locale("es", "ES"));
@@ -250,7 +246,7 @@ public class EstadoSubteFragment extends Fragment {
 
                 realmDate.commitTransaction();
                 realmDate.addChangeListener(realmChangeListenerDate);
-
+                */
                 // Eliminamos la linea que no se utiliza.
                 removeUnunsedLine("P");
                 removeUnunsedLine("U");
